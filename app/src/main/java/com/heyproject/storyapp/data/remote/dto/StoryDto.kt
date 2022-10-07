@@ -10,22 +10,22 @@ Github : https://github.com/yayanrw
 data class StoryDto(
 
     @Json(name = "photoUrl")
-    val photoUrl: String?,
+    val photoUrl: String,
 
     @Json(name = "createdAt")
-    val createdAt: String?,
+    val createdAt: String,
 
     @Json(name = "name")
-    val name: String?,
+    val name: String,
 
     @Json(name = "description")
-    val description: String?,
+    val description: String,
 
     @Json(name = "lon")
     val lon: Double?,
 
     @Json(name = "id")
-    val id: String?,
+    val id: String,
 
     @Json(name = "lat")
     val lat: Double?
