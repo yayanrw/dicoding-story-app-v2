@@ -5,12 +5,12 @@ import com.squareup.moshi.Json
 
 data class StoriesResponse(
 
-	@Json(name="listStory")
-	val listStory: List<StoryDto>? = null,
+    @Json(name = "listStory")
+    val listStory: List<StoryDto>,
 
-	@Json(name="error")
-	val error: Boolean? = null,
+    @Json(name = "error")
+    val error: Boolean,
 
-	@Json(name="message")
-	val message: String? = null
+    @Json(name = "message")
+    val message: String
 )
