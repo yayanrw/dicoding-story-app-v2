@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.login.LoginFragment">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.heyproject.storyapp.ui.login.LoginViewModel" />
+
+        <variable
+            name="loginFragment"
+            type="com.heyproject.storyapp.ui.login.LoginFragment" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/linear_progress_indicator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_app_name"
+                style="@style/Widget.StoryApp.TextView.BigTitle"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="108dp"
+                android:text="@string/app_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:alpha="0" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/login_email"
+                style="@style/Widget.StoryApp.TextInputLayout.OutlinedBox"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="64dp"
+                android:layout_marginEnd="16dp"
+                android:hint="@string/email"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tv_app_name"
+                app:layout_constraintTop_toBottomOf="@+id/tv_app_name"
+                app:startIconDrawable="@drawable/ic_baseline_email_24"
+                android:alpha="0">
+
+                <com.heyproject.storyapp.customview.EmailEditText
+                    android:id="@+id/ed_login_email"
+                    style="@style/TextInputEditText"
+                    android:inputType="textEmailAddress" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/login_password"
+                style="@style/Widget.StoryApp.TextInputLayout.OutlinedBox"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:hint="@string/password"
+                app:endIconMode="password_toggle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/login_email"
+                app:layout_constraintTop_toBottomOf="@+id/login_email"
+                app:startIconDrawable="@drawable/ic_baseline_lock_24"
+                android:alpha="0">
+
+                <com.heyproject.storyapp.customview.PasswordEditText
+                    android:id="@+id/ed_login_password"
+                    style="@style/TextInputEditText"
+                    android:inputType="textPassword" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_sign_in"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="16dp"
+                android:onClick="@{() -> loginFragment.signIn()}"
+                android:text="@string/sign_in"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/login_password"
+                android:alpha="0" />
+
+            <LinearLayout
+                android:id="@+id/lnr_not_registered"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintStart_toStartOf="@+id/btn_sign_in"
+                app:layout_constraintTop_toBottomOf="@+id/btn_sign_in"
+                android:alpha="0">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/not_registered_yet" />
+
+                <TextView
+                    android:id="@+id/tv_create_account"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:minHeight="48dp"
+                    android:onClick="@{() -> loginFragment.goToRegisterScreen()}"
+                    android:text="@string/create_an_account"
+                    android:textColor="@color/purple_500" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>
+

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.story_add.CameraActivity">
+
+    <data>
+
+        <variable
+            name="cameraActivity"
+            type="com.heyproject.storyapp.ui.story_add.CameraActivity" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.camera.view.PreviewView
+            android:id="@+id/viewFinder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/captureImage"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="@string/story_images"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/ic_baseline_photo_camera_24"
+            android:onClick="@{() -> cameraActivity.takePhoto()}"/>
+
+        <ImageView
+            android:id="@+id/switchCamera"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:contentDescription="@string/story_images"
+            app:layout_constraintEnd_toEndOf="@+id/viewFinder"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_cameraswitch_24"
+            android:onClick="@{() -> cameraActivity.switchCamera()}"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Story App</string>
+    <string name="email">Email</string>
+    <string name="password">Kata sandi</string>
+    <string name="sign_in">Masuk</string>
+    <string name="not_registered_yet">Belum terdaftar?</string>
+    <string name="create_an_account">Buat sebuah Akun</string>
+    <string name="name">Nama</string>
+    <string name="register">Daftar</string>
+    <string name="register_now">Daftar sekarang</string>
+    <string name="login">Masuk</string>
+    <string name="minlength">Kata sandi harus minimal %1$d karakter</string>
+    <string name="required">Bagian ini diperlukan</string>
+    <string name="not_valid_email">Ini bukan email yang valid</string>
+    <string name="log_out">Keluar</string>
+    <string name="story_images">Gambar cerita</string>
+    <string name="add_new_story">Tambahkan cerita baru</string>
+    <string name="camera">Kamera</string>
+    <string name="gallery">Galeri</string>
+    <string name="description">Keterangan</string>
+    <string name="upload">Unggah</string>
+    <string name="oops">Ups! Ada yang tidak beres!</string>
+    <string name="no_connection">Tidak dapat menjangkau server, periksa koneksi internet Anda.</string>
+    <string name="no_data_available">Tidak ada data yang tersedia</string>
+    <string name="refresh">Segarkan</string>
+    <string name="invalid_credentials">Email atau kata sandi Anda tidak valid</string>
+    <string name="email_taken">Email ini sudah ada</string>
+    <string name="success_register">Daftar berhasil, silakan masuk untuk melanjutkan</string>
+    <string name="failed_open_camera">Gagal memunculkan kamera</string>
+    <string name="failed_take_photo">Gagal mengambil gambar</string>
+    <string name="failed_get_persmission">Gagal mendapatkan izin</string>
+    <string name="choose_picture">Pilih gambar</string>
+    <string name="choose_image_warn">Silakan pilih file gambar terlebih dahulu</string>
+    <string name="setting">Pengaturan</string>
+    <string name="appwidget_text">Banner Cerita</string>
+    <string name="empty_text">Tidak ada data</string>
+    <string name="upload_success">Berhasil mengunggah gambar</string>
+</resources>
