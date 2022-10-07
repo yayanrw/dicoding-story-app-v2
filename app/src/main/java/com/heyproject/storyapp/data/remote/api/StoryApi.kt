@@ -1,4 +1,4 @@
-package com.heyproject.storyapp.network
+package com.heyproject.storyapp.data.remote.api
 
 import com.heyproject.storyapp.BuildConfig
 import com.heyproject.storyapp.core.BASE_URL

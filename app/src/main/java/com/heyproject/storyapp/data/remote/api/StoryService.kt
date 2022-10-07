@@ -1,4 +1,4 @@
-package com.heyproject.storyapp.network
+package com.heyproject.storyapp.data.remote.api
 
 import com.heyproject.storyapp.data.remote.response.GeneralResponse
 import com.heyproject.storyapp.data.remote.response.LoginResponse
@@ -37,5 +37,5 @@ interface StoryService {
         @Query("size") size: Int,
         @Query("location") location: Int,
         @Header("Authorization") auth: String
-    ) : StoriesResponse
+    ): StoriesResponse
 }
