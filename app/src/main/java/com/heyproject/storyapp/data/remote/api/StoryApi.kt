@@ -1,7 +1,7 @@
 package com.heyproject.storyapp.data.remote.api
 
 import com.heyproject.storyapp.BuildConfig
-import com.heyproject.storyapp.core.BASE_URL
+import com.heyproject.storyapp.data.remote.api.StoryApi.BASE_URL
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -31,5 +31,6 @@ private val retrofit = Retrofit.Builder()
     .build()
 
 object StoryApi {
+    const val BASE_URL = "https://story-api.dicoding.dev/v1/"
     val retrofitService: StoryService by lazy { retrofit.create(StoryService::class.java) }
 }

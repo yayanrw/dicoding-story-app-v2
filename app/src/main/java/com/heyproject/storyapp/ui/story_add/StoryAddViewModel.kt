@@ -1,9 +1,9 @@
 package com.heyproject.storyapp.ui.story_add
 
 import androidx.lifecycle.*
+import com.heyproject.storyapp.data.remote.api.StoryApi
 import com.heyproject.storyapp.model.User
 import com.heyproject.storyapp.model.UserPreference
-import com.heyproject.storyapp.network.StoryApi
 import com.heyproject.storyapp.util.RequestState
 import com.heyproject.storyapp.util.reduceFileImage
 import kotlinx.coroutines.flow.first
