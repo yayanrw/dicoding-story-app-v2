@@ -13,7 +13,7 @@ import com.heyproject.storyapp.R
 import com.heyproject.storyapp.databinding.FragmentStoryDetailBinding
 import com.heyproject.storyapp.model.UserPreference
 import com.heyproject.storyapp.model.dataStore
-import com.heyproject.storyapp.network.response.ListStoryItem
+import com.heyproject.storyapp.data.remote.response.StoryDto
 import com.heyproject.storyapp.ui.ViewModelFactory
 
 class StoryDetailFragment : Fragment() {
@@ -38,7 +38,7 @@ class StoryDetailFragment : Fragment() {
         removeActionBar()
         userPreference = UserPreference(requireContext().dataStore)
 
-        val storyItem = ListStoryItem(
+        val storyItem = StoryDto(
             name = args.name,
             description = args.description,
             photoUrl = args.photoUrl

@@ -13,7 +13,6 @@ import com.heyproject.storyapp.adapter.StoryAdapter
 import com.heyproject.storyapp.databinding.FragmentHomeBinding
 import com.heyproject.storyapp.model.UserPreference
 import com.heyproject.storyapp.model.dataStore
-import com.heyproject.storyapp.network.response.ListStoryItem
 import com.heyproject.storyapp.ui.ViewModelFactory
 import com.heyproject.storyapp.util.RequestState
 
@@ -46,7 +45,7 @@ class HomeFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner
             viewModel = viewModel
             homeFragment = this@HomeFragment
-            rvStory.adapter = StoryAdapter(listOf())
+//            rvStory.adapter = StoryAdapter(listOf())
             rvStory.setHasFixedSize(true)
             screenError.homeFragment = this@HomeFragment
         }
@@ -60,21 +59,21 @@ class HomeFragment : Fragment() {
         }
 
         viewModel.stories.observe(viewLifecycleOwner) {
-            storyAdapter = StoryAdapter(listOf())
-            storyAdapter = StoryAdapter(it)
-            binding?.rvStory?.adapter = storyAdapter
-
-            storyAdapter.setOnItemClickCallBack(object : StoryAdapter.OnItemClickCallback {
-                override fun onItemClicked(storyItem: ListStoryItem) {
-                    val toStoryDetailFragment =
-                        HomeFragmentDirections.actionHomeFragmentToStoryDetailFragment(
-                            storyItem.name!!,
-                            storyItem.description!!,
-                            storyItem.photoUrl!!
-                        )
-                    findNavController().navigate(toStoryDetailFragment)
-                }
-            })
+//            storyAdapter = StoryAdapter(listOf())
+//            storyAdapter = StoryAdapter(it)
+//            binding?.rvStory?.adapter = storyAdapter
+//
+//            storyAdapter.setOnItemClickCallBack(object : StoryAdapter.OnItemClickCallback {
+//                override fun onItemClicked(storyItem: StoryDto) {
+//                    val toStoryDetailFragment =
+//                        HomeFragmentDirections.actionHomeFragmentToStoryDetailFragment(
+//                            storyItem.name!!,
+//                            storyItem.description!!,
+//                            storyItem.photoUrl!!
+//                        )
+//                    findNavController().navigate(toStoryDetailFragment)
+//                }
+//            })
         }
 
         viewModel.requestState.observe(viewLifecycleOwner) {
@@ -131,6 +130,6 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
-        storyAdapter = StoryAdapter(listOf())
+//        storyAdapter = StoryAdapter(listOf())
     }
 }

@@ -1,8 +1,8 @@
 package com.heyproject.storyapp.network
 
-import com.heyproject.storyapp.network.response.GeneralResponse
-import com.heyproject.storyapp.network.response.LoginResponse
-import com.heyproject.storyapp.network.response.StoriesResponse
+import com.heyproject.storyapp.data.remote.response.GeneralResponse
+import com.heyproject.storyapp.data.remote.response.LoginResponse
+import com.heyproject.storyapp.data.remote.response.StoriesResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.*

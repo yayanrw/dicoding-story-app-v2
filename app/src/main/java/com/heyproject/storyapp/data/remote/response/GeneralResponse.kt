@@ -1,4 +1,4 @@
-package com.heyproject.storyapp.network.response
+package com.heyproject.storyapp.data.remote.response
 
 import com.squareup.moshi.Json
 

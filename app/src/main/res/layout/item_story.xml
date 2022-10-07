@@ -6,7 +6,7 @@
     <data>
         <variable
             name="story"
-            type="com.heyproject.storyapp.network.response.ListStoryItem" />
+            type="com.heyproject.storyapp.domain.model.Story" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

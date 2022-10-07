@@ -9,7 +9,7 @@
 
         <variable
             name="story"
-            type="com.heyproject.storyapp.network.response.ListStoryItem" />
+            type="com.heyproject.storyapp.data.remote.response.StoryDto" />
     </data>
 
     <ScrollView

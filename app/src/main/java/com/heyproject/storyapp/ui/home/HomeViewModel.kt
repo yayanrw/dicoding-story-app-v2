@@ -4,7 +4,7 @@ import androidx.lifecycle.*
 import com.heyproject.storyapp.model.User
 import com.heyproject.storyapp.model.UserPreference
 import com.heyproject.storyapp.network.StoryApi
-import com.heyproject.storyapp.network.response.ListStoryItem
+import com.heyproject.storyapp.data.remote.response.StoryDto
 import com.heyproject.storyapp.util.RequestState
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -16,8 +16,8 @@ class HomeViewModel(private val pref: UserPreference) : ViewModel() {
     private val _requestState = MutableLiveData<RequestState>()
     val requestState: LiveData<RequestState> = _requestState
 
-    private val _stories = MutableLiveData<List<ListStoryItem>?>()
-    val stories: LiveData<List<ListStoryItem>?> = _stories
+    private val _stories = MutableLiveData<List<StoryDto>?>()
+    val stories: LiveData<List<StoryDto>?> = _stories
 
     fun fetchStories() {
         val token = runBlocking {

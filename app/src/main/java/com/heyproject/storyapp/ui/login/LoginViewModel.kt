@@ -4,7 +4,7 @@ import androidx.lifecycle.*
 import com.heyproject.storyapp.model.User
 import com.heyproject.storyapp.model.UserPreference
 import com.heyproject.storyapp.network.StoryApi
-import com.heyproject.storyapp.network.response.LoginResult
+import com.heyproject.storyapp.network.response.LoginResultDto
 import com.heyproject.storyapp.util.RequestState
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -24,7 +24,7 @@ class LoginViewModel(private val pref: UserPreference) : ViewModel() {
                 val response = StoryApi.retrofitService.postLogin(email, password)
                 if (!response.error!!) {
                     _requestState.value = RequestState.SUCCESS
-                    pref.saveUser(LoginResult().toLoginUser(response.loginResult!!))
+                    pref.saveUser(LoginResultDto().toLoginUser(response.loginResult!!))
                 } else {
                     _requestState.value = RequestState.ERROR
                 }
