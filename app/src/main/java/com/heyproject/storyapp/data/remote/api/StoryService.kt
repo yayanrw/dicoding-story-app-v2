@@ -33,9 +33,9 @@ interface StoryService {
 
     @GET("stories")
     suspend fun getStories(
+        @Header("Authorization") auth: String,
         @Query("page") page: Int,
         @Query("size") size: Int,
-        @Query("location") location: Int,
-        @Header("Authorization") auth: String
+        @Query("location") location: Int? = null,
     ): StoriesResponse
 }
