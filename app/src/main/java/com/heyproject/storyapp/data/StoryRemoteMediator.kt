@@ -1,4 +1,4 @@
-package com.heyproject.storyapp.data.datasource.remote
+package com.heyproject.storyapp.data
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
