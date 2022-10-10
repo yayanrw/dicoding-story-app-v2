@@ -1,8 +1,8 @@
-package com.heyproject.storyapp.data.remote.api
+package com.heyproject.storyapp.data.datasource.remote.api
 
-import com.heyproject.storyapp.data.remote.response.GeneralResponse
-import com.heyproject.storyapp.data.remote.response.LoginResponse
-import com.heyproject.storyapp.data.remote.response.StoriesResponse
+import com.heyproject.storyapp.data.datasource.remote.response.GeneralResponse
+import com.heyproject.storyapp.data.datasource.remote.response.LoginResponse
+import com.heyproject.storyapp.data.datasource.remote.response.StoriesResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.*

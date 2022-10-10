@@ -3,7 +3,7 @@ package com.heyproject.storyapp.di
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import com.heyproject.storyapp.data.local.UserPreferencesDataStore
+import com.heyproject.storyapp.data.datasource.local.UserPreferencesDataStore
 import com.heyproject.storyapp.model.dataStore
 import dagger.Module
 import dagger.Provides

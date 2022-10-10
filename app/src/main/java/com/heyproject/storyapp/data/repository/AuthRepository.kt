@@ -1,9 +1,9 @@
 package com.heyproject.storyapp.data.repository
 
-import com.heyproject.storyapp.data.local.UserPreferencesDataStore
-import com.heyproject.storyapp.data.remote.api.StoryService
-import com.heyproject.storyapp.data.remote.response.GeneralResponse
-import com.heyproject.storyapp.data.remote.response.LoginResponse
+import com.heyproject.storyapp.data.datasource.local.UserPreferencesDataStore
+import com.heyproject.storyapp.data.datasource.remote.api.StoryService
+import com.heyproject.storyapp.data.datasource.remote.response.GeneralResponse
+import com.heyproject.storyapp.data.datasource.remote.response.LoginResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

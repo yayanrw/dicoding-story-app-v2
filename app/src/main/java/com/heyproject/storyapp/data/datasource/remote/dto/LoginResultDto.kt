@@ -1,4 +1,4 @@
-package com.heyproject.storyapp.data.remote.dto
+package com.heyproject.storyapp.data.datasource.remote.dto
 
 import com.squareup.moshi.Json
 

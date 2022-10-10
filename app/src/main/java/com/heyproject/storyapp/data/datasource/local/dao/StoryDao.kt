@@ -1,11 +1,11 @@
-package com.heyproject.storyapp.data.local.dao
+package com.heyproject.storyapp.data.datasource.local.dao
 
 import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.heyproject.storyapp.data.local.entity.StoryEntity
+import com.heyproject.storyapp.data.datasource.local.entity.StoryEntity
 
 /**
 Written by Yayan Rahmat Wijaya on 10/7/2022 13:52

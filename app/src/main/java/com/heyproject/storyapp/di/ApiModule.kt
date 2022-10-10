@@ -1,6 +1,6 @@
 package com.heyproject.storyapp.di
 
-import com.heyproject.storyapp.data.remote.api.StoryService
+import com.heyproject.storyapp.data.datasource.remote.api.StoryService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

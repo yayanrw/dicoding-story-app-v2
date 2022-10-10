@@ -1,7 +1,7 @@
-package com.heyproject.storyapp.data.remote.api
+package com.heyproject.storyapp.data.datasource.remote.api
 
 import com.heyproject.storyapp.BuildConfig
-import com.heyproject.storyapp.data.remote.api.StoryApi.BASE_URL
+import com.heyproject.storyapp.data.datasource.remote.api.StoryApi.BASE_URL
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient

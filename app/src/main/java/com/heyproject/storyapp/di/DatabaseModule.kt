@@ -2,9 +2,9 @@ package com.heyproject.storyapp.di
 
 import android.content.Context
 import androidx.room.Room
-import com.heyproject.storyapp.data.local.dao.RemoteKeysDao
-import com.heyproject.storyapp.data.local.dao.StoryDao
-import com.heyproject.storyapp.data.local.database.StoryDatabase
+import com.heyproject.storyapp.data.datasource.local.dao.RemoteKeysDao
+import com.heyproject.storyapp.data.datasource.local.dao.StoryDao
+import com.heyproject.storyapp.data.datasource.local.database.StoryDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,7 +1,7 @@
 package com.heyproject.storyapp.ui.story_add
 
 import androidx.lifecycle.*
-import com.heyproject.storyapp.data.remote.api.StoryApi
+import com.heyproject.storyapp.data.datasource.remote.api.StoryApi
 import com.heyproject.storyapp.domain.model.User
 import com.heyproject.storyapp.model.UserPreference
 import com.heyproject.storyapp.util.RequestState

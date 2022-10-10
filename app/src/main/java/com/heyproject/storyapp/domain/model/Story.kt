@@ -1,7 +1,7 @@
 package com.heyproject.storyapp.domain.model
 
-import com.heyproject.storyapp.data.local.entity.StoryEntity
-import com.heyproject.storyapp.data.remote.dto.StoryDto
+import com.heyproject.storyapp.data.datasource.local.entity.StoryEntity
+import com.heyproject.storyapp.data.datasource.remote.dto.StoryDto
 
 /**
 Written by Yayan Rahmat Wijaya on 10/7/2022 14:59

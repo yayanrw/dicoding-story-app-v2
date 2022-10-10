@@ -1,6 +1,6 @@
-package com.heyproject.storyapp.data.remote.response
+package com.heyproject.storyapp.data.datasource.remote.response
 
-import com.heyproject.storyapp.data.remote.dto.StoryDto
+import com.heyproject.storyapp.data.datasource.remote.dto.StoryDto
 import com.squareup.moshi.Json
 
 data class StoriesResponse(

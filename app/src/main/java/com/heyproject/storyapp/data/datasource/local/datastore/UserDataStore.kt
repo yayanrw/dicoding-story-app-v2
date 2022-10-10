@@ -1,4 +1,4 @@
-package com.heyproject.storyapp.data.local.datastore
+package com.heyproject.storyapp.data.datasource.local.datastore
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences

@@ -1,14 +1,14 @@
-package com.heyproject.storyapp.data.remote
+package com.heyproject.storyapp.data.datasource.remote
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
-import com.heyproject.storyapp.data.local.database.StoryDatabase
-import com.heyproject.storyapp.data.local.entity.RemoteKeysEntity
-import com.heyproject.storyapp.data.local.entity.StoryEntity
-import com.heyproject.storyapp.data.remote.api.StoryService
+import com.heyproject.storyapp.data.datasource.local.database.StoryDatabase
+import com.heyproject.storyapp.data.datasource.local.entity.RemoteKeysEntity
+import com.heyproject.storyapp.data.datasource.local.entity.StoryEntity
+import com.heyproject.storyapp.data.datasource.remote.api.StoryService
 import com.heyproject.storyapp.domain.model.toEntity
 
 /**

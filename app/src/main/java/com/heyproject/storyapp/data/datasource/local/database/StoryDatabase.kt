@@ -1,11 +1,11 @@
-package com.heyproject.storyapp.data.local.database
+package com.heyproject.storyapp.data.datasource.local.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.heyproject.storyapp.data.local.dao.RemoteKeysDao
-import com.heyproject.storyapp.data.local.dao.StoryDao
-import com.heyproject.storyapp.data.local.entity.RemoteKeysEntity
-import com.heyproject.storyapp.data.local.entity.StoryEntity
+import com.heyproject.storyapp.data.datasource.local.dao.RemoteKeysDao
+import com.heyproject.storyapp.data.datasource.local.dao.StoryDao
+import com.heyproject.storyapp.data.datasource.local.entity.RemoteKeysEntity
+import com.heyproject.storyapp.data.datasource.local.entity.StoryEntity
 
 /**
 Written by Yayan Rahmat Wijaya on 10/7/2022 14:30
