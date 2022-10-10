@@ -1,60 +1,30 @@
 package com.heyproject.storyapp.ui.home
 
-import androidx.lifecycle.*
-import com.heyproject.storyapp.domain.model.User
-import com.heyproject.storyapp.model.UserPreference
-import com.heyproject.storyapp.network.StoryApi
-import com.heyproject.storyapp.data.remote.response.StoryDto
-import com.heyproject.storyapp.util.RequestState
-import kotlinx.coroutines.flow.first
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.map
+import com.heyproject.storyapp.data.repository.StoryRepository
+import com.heyproject.storyapp.data.repository.UserRepository
+import com.heyproject.storyapp.domain.model.Story
+import com.heyproject.storyapp.domain.model.toDomain
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import retrofit2.HttpException
-import java.io.IOException
 
-class HomeViewModel(private val pref: UserPreference) : ViewModel() {
-    private val _requestState = MutableLiveData<RequestState>()
-    val requestState: LiveData<RequestState> = _requestState
-
-    private val _stories = MutableLiveData<List<StoryDto>?>()
-    val stories: LiveData<List<StoryDto>?> = _stories
-
-    fun fetchStories() {
-        val token = runBlocking {
-            pref.getUser().first().token
-        }
-        viewModelScope.launch {
-            try {
-                _requestState.value = RequestState.LOADING
-                val responseListStories = StoryApi.retrofitService.getStories(
-                    1,
-                    10,
-                    0,
-                    "Bearer $token"
-                ).listStory
-                _stories.value = responseListStories
-                if (responseListStories.isNullOrEmpty()) {
-                    _requestState.value = RequestState.NO_DATA
-                } else {
-                    _requestState.value = RequestState.SUCCESS
-                }
-            } catch (e: HttpException) {
-                _requestState.value = RequestState.ERROR
-                _stories.value = listOf()
-            } catch (e: IOException) {
-                _requestState.value = RequestState.NO_CONNECTION
-                _stories.value = listOf()
+class HomeViewModel(
+    private val userRepository: UserRepository,
+    private val storyRepository: StoryRepository
+) : ViewModel() {
+    fun fetchStories(token: String): LiveData<PagingData<Story>> =
+        storyRepository.getStories(token).map { result ->
+            result.map { storyEntity ->
+                storyEntity.toDomain()
             }
-        }
-    }
+        }.cachedIn(viewModelScope)
 
-    fun getUser(): LiveData<User> {
-        return pref.getUser().asLiveData()
-    }
-
-    fun logout() {
-        viewModelScope.launch {
-            pref.logout()
-        }
+    fun logOut() = viewModelScope.launch {
+        userRepository.logOut()
     }
 }
