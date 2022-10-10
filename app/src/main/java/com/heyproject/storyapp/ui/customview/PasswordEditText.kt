@@ -1,14 +1,14 @@
-package com.heyproject.storyapp.customview
+package com.heyproject.storyapp.ui.customview
 
 import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
-import android.util.Patterns
 import com.google.android.material.textfield.TextInputEditText
 import com.heyproject.storyapp.R
+import com.heyproject.storyapp.core.MIN_PASSWORD_LENGTH
 
-class EmailEditText : TextInputEditText {
+class PasswordEditText : TextInputEditText {
     constructor(context: Context) : super(context) {
         init()
     }
@@ -35,8 +35,8 @@ class EmailEditText : TextInputEditText {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                if(!Patterns.EMAIL_ADDRESS.matcher(s.toString()).matches()) {
-                    setError(context.getString(R.string.not_valid_email), null)
+                if (s!!.length < MIN_PASSWORD_LENGTH) {
+                    setError(context.getString(R.string.minlength, MIN_PASSWORD_LENGTH), null)
                 }
             }
         })

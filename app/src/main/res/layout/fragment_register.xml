@@ -79,7 +79,7 @@
                 app:startIconDrawable="@drawable/ic_baseline_email_24"
                 android:alpha="0">
 
-                <com.heyproject.storyapp.customview.EmailEditText
+                <com.heyproject.storyapp.ui.customview.EmailEditText
                     android:id="@+id/ed_register_email"
                     style="@style/TextInputEditText"
                     android:inputType="textEmailAddress" />
@@ -100,7 +100,7 @@
                 app:startIconDrawable="@drawable/ic_baseline_lock_24"
                 android:alpha="0">
 
-                <com.heyproject.storyapp.customview.PasswordEditText
+                <com.heyproject.storyapp.ui.customview.PasswordEditText
                     android:id="@+id/ed_register_password"
                     style="@style/TextInputEditText"
                     android:inputType="textPassword" />
