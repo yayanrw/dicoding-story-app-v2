@@ -1,6 +1,5 @@
 package com.heyproject.storyapp.data.remote.dto
 
-import com.heyproject.storyapp.model.User
 import com.squareup.moshi.Json
 
 /**

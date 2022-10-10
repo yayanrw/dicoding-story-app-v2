@@ -1,7 +1,7 @@
 package com.heyproject.storyapp.ui.register
 
 import androidx.lifecycle.*
-import com.heyproject.storyapp.model.User
+import com.heyproject.storyapp.domain.model.User
 import com.heyproject.storyapp.model.UserPreference
 import com.heyproject.storyapp.network.StoryApi
 import com.heyproject.storyapp.util.RequestState
