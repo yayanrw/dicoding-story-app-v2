@@ -2,21 +2,19 @@ package com.heyproject.storyapp.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.paging.*
+import com.heyproject.storyapp.data.StoryRemoteMediator
 import com.heyproject.storyapp.data.datasource.local.database.StoryDatabase
 import com.heyproject.storyapp.data.datasource.local.entity.StoryEntity
-import com.heyproject.storyapp.data.StoryRemoteMediator
 import com.heyproject.storyapp.data.datasource.remote.api.StoryService
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import javax.inject.Inject
 
 /**
 Written by Yayan Rahmat Wijaya on 10/10/2022 10:01
 Github : https://github.com/yayanrw
  **/
 
-@ExperimentalPagingApi
-class StoryRepository @Inject constructor(
+class StoryRepository(
     private val storyDatabase: StoryDatabase,
     private val storyService: StoryService
 ) {
