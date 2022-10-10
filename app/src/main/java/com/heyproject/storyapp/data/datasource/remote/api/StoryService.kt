@@ -25,7 +25,7 @@ interface StoryService {
 
     @Multipart
     @POST("stories")
-    suspend fun insertStory(
+    suspend fun postStory(
         @Header("Authorization") auth: String,
         @Part photo: MultipartBody.Part,
         @Part("description") description: RequestBody,

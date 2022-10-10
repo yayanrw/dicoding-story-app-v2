@@ -1,18 +1,11 @@
 package com.heyproject.storyapp.data.repository
 
-import androidx.paging.ExperimentalPagingApi
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
+import androidx.lifecycle.LiveData
+import androidx.paging.*
 import com.heyproject.storyapp.data.datasource.local.database.StoryDatabase
 import com.heyproject.storyapp.data.datasource.local.entity.StoryEntity
 import com.heyproject.storyapp.data.datasource.remote.StoryRemoteMediator
 import com.heyproject.storyapp.data.datasource.remote.api.StoryService
-import com.heyproject.storyapp.data.datasource.remote.response.GeneralResponse
-import com.heyproject.storyapp.data.datasource.remote.response.StoriesResponse
-import com.heyproject.storyapp.util.wrapEspressoIdlingResource
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import javax.inject.Inject
@@ -27,11 +20,10 @@ class StoryRepository @Inject constructor(
     private val storyDatabase: StoryDatabase,
     private val storyService: StoryService
 ) {
-    fun getAllStories(token: String): Flow<PagingData<StoryEntity>> {
+    @OptIn(ExperimentalPagingApi::class)
+    fun getStories(token: String): LiveData<PagingData<StoryEntity>> {
         return Pager(
-            config = PagingConfig(
-                pageSize = 10,
-            ),
+            config = PagingConfig(pageSize = 10),
             remoteMediator = StoryRemoteMediator(
                 storyDatabase,
                 storyService,
@@ -40,40 +32,43 @@ class StoryRepository @Inject constructor(
             pagingSourceFactory = {
                 storyDatabase.storyDao().getStories()
             }
-        ).flow
+        ).liveData
     }
 
-    fun getAllStoriesWithLocation(token: String): Flow<Result<StoriesResponse>> = flow {
-        wrapEspressoIdlingResource {
-            try {
-                val bearerToken = generateBearerToken(token)
-                val response = storyService.getStories(bearerToken, size = 30, location = 1)
-                emit(Result.success(response))
-            } catch (e: Exception) {
-                e.printStackTrace()
-                emit(Result.failure(e))
-            }
-        }
-    }
+    suspend fun getAllStoriesWithLocation(token: String) = storyService.getStories(
+        generateBearerToken(token),
+        size = 10,
+        location = 1
+    )
 
-    suspend fun uploadImage(
+    suspend fun uploadStory(
         token: String,
         file: MultipartBody.Part,
         description: RequestBody,
         lat: RequestBody? = null,
         lon: RequestBody? = null
-    ): Flow<Result<GeneralResponse>> = flow {
-        try {
-            val bearerToken = generateBearerToken(token)
-            val response = storyService.insertStory(bearerToken, file, description, lat, lon)
-            emit(Result.success(response))
-        } catch (e: Exception) {
-            e.printStackTrace()
-            emit(Result.failure(e))
-        }
+    ) {
+        storyService.postStory(
+            generateBearerToken(token),
+            file,
+            description,
+            lat,
+            lon
+        )
     }
 
     private fun generateBearerToken(token: String): String {
         return "Bearer $token"
+    }
+
+    companion object {
+        private var INSTANCE: StoryRepository? = null
+        fun getInstance(storyService: StoryService, storyDatabase: StoryDatabase): StoryRepository {
+            return INSTANCE ?: synchronized(this) {
+                StoryRepository(storyDatabase, storyService).also {
+                    INSTANCE = it
+                }
+            }
+        }
     }
 }
