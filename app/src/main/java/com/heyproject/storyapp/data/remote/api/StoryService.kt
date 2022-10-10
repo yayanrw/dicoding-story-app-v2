@@ -26,16 +26,18 @@ interface StoryService {
     @Multipart
     @POST("stories")
     suspend fun insertStory(
+        @Header("Authorization") auth: String,
         @Part photo: MultipartBody.Part,
         @Part("description") description: RequestBody,
-        @Header("Authorization") auth: String
+        @Part("lat") lat: RequestBody?,
+        @Part("lon") lon: RequestBody?
     ): GeneralResponse
 
     @GET("stories")
     suspend fun getStories(
         @Header("Authorization") auth: String,
-        @Query("page") page: Int,
-        @Query("size") size: Int,
+        @Query("page") page: Int? = null,
+        @Query("size") size: Int? = null,
         @Query("location") location: Int? = null,
     ): StoriesResponse
 }

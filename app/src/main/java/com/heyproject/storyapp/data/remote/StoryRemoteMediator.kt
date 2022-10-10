@@ -7,8 +7,8 @@ import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.heyproject.storyapp.data.local.database.StoryDatabase
 import com.heyproject.storyapp.data.local.entity.RemoteKeysEntity
+import com.heyproject.storyapp.data.local.entity.StoryEntity
 import com.heyproject.storyapp.data.remote.api.StoryService
-import com.heyproject.storyapp.domain.model.Story
 import com.heyproject.storyapp.domain.model.toEntity
 
 /**
@@ -21,9 +21,11 @@ class StoryRemoteMediator(
     private val storyDatabase: StoryDatabase,
     private val storyService: StoryService,
     private val token: String
-) : RemoteMediator<Int, Story>() {
-    override suspend fun load(loadType: LoadType, state: PagingState<Int, Story>): MediatorResult {
-        // Determine page value based on LoadType
+) : RemoteMediator<Int, StoryEntity>() {
+    override suspend fun load(
+        loadType: LoadType,
+        state: PagingState<Int, StoryEntity>
+    ): MediatorResult {
         val page = when (loadType) {
             LoadType.REFRESH -> {
                 val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
@@ -61,15 +63,10 @@ class StoryRemoteMediator(
                     RemoteKeysEntity(id = it.id, prevKey = prevKey, nextKey = nextKey)
                 }
 
-                // Save RemoteKeys information to database
                 storyDatabase.remoteKeysDao().insertAll(keys)
 
-                // Convert StoryResponseItem class to Story class
-                // We need to convert because the response from API is different from local database Entity
                 responseData.listStory.forEach { storyDto ->
                     val story = storyDto.toEntity()
-
-                    // Save Story to the local database
                     storyDatabase.storyDao().insertStory(story)
                 }
             }
@@ -81,19 +78,19 @@ class StoryRemoteMediator(
         }
     }
 
-    private suspend fun getRemoteKeysForLastItem(state: PagingState<Int, Story>): RemoteKeysEntity? {
+    private suspend fun getRemoteKeysForLastItem(state: PagingState<Int, StoryEntity>): RemoteKeysEntity? {
         return state.pages.lastOrNull { it.data.isNotEmpty() }?.data?.lastOrNull()?.let { data ->
             storyDatabase.remoteKeysDao().getRemoteKeysId(data.id)
         }
     }
 
-    private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, Story>): RemoteKeysEntity? {
+    private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, StoryEntity>): RemoteKeysEntity? {
         return state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()?.let { data ->
             storyDatabase.remoteKeysDao().getRemoteKeysId(data.id)
         }
     }
 
-    private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, Story>): RemoteKeysEntity? {
+    private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, StoryEntity>): RemoteKeysEntity? {
         return state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.id?.let { id ->
                 storyDatabase.remoteKeysDao().getRemoteKeysId(id)
