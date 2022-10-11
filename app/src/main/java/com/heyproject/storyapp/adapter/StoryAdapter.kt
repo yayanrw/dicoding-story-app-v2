@@ -2,14 +2,14 @@ package com.heyproject.storyapp.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.heyproject.storyapp.databinding.ItemStoryBinding
 import com.heyproject.storyapp.domain.model.Story
 
 class StoryAdapter :
-    ListAdapter<Story, StoryAdapter.StoryViewHolder>(DiffCallback) {
+    PagingDataAdapter<Story, StoryAdapter.StoryViewHolder>(DiffCallback) {
     var onItemClick: ((Story) -> Unit)? = null
 
     inner class StoryViewHolder(var binding: ItemStoryBinding) :
@@ -24,7 +24,7 @@ class StoryAdapter :
 
         init {
             binding.root.setOnClickListener {
-                onItemClick?.invoke(getItem(adapterPosition))
+                onItemClick?.invoke(getItem(bindingAdapterPosition)!!)
             }
         }
     }
