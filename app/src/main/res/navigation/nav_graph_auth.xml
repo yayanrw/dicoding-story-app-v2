@@ -36,23 +36,14 @@
         <action
             android:id="@+id/action_storyDetailFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
-        <argument
-            android:name="name"
-            android:defaultValue="story_name"
-            app:argType="string" />
-        <argument
-            android:name="description"
-            android:defaultValue="story_description"
-            app:argType="string" />
-        <argument
-            android:name="photoUrl"
-            android:defaultValue="photo_url"
-            app:argType="string" />
         <action
             android:id="@+id/action_storyDetailFragment_to_loginFragment"
             app:destination="@id/loginFragment"
             app:popUpTo="@id/storyDetailFragment"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="story"
+            app:argType="com.heyproject.storyapp.domain.model.Story" />
     </fragment>
     <activity
         android:id="@+id/storyAddActivity"
