@@ -15,81 +15,81 @@ import com.google.android.material.snackbar.Snackbar
 import com.heyproject.storyapp.R
 import com.heyproject.storyapp.core.MIN_PASSWORD_LENGTH
 import com.heyproject.storyapp.databinding.FragmentRegisterBinding
-import com.heyproject.storyapp.model.UserPreference
-import com.heyproject.storyapp.model.dataStore
 import com.heyproject.storyapp.ui.ViewModelFactory
-import com.heyproject.storyapp.util.RequestState
+import com.heyproject.storyapp.util.Result
 
 class RegisterFragment : Fragment() {
-    private var binding: FragmentRegisterBinding? = null
-    private lateinit var userPreference: UserPreference
+    private var _binding: FragmentRegisterBinding? = null
+    val binding get() = _binding!!
+
     private val viewModel: RegisterViewModel by viewModels {
-        ViewModelFactory(userPreference)
+        ViewModelFactory.getInstance(requireContext())
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        val registerBinding = FragmentRegisterBinding.inflate(inflater, container, false)
-        binding = registerBinding
-        return registerBinding.root
+        _binding = FragmentRegisterBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         removeActionBar()
-        userPreference = UserPreference(requireContext().dataStore)
 
-        binding?.apply {
+        binding.apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = viewModel
             registerFragment = this@RegisterFragment
         }
 
-        viewModel.getUser().observe(viewLifecycleOwner) {
+        setObserver()
+        playAnimation()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun setObserver() {
+        viewModel.user.observe(viewLifecycleOwner) {
             if (it.isLogin) {
                 findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
             }
         }
 
-        viewModel.requestState.observe(viewLifecycleOwner) {
-            when (it) {
-                RequestState.LOADING -> {
+        viewModel.registerState.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is Result.Loading -> {
                     setLoading(true)
                 }
-                RequestState.ERROR -> {
+                is Result.Success -> {
                     setLoading(false)
-                    Snackbar.make(view, getString(R.string.oops), Snackbar.LENGTH_SHORT).show()
-                }
-                RequestState.NO_CONNECTION -> {
-                    setLoading(false)
-                    Snackbar.make(view, getString(R.string.no_connection), Snackbar.LENGTH_SHORT)
-                        .show()
-                }
-                RequestState.EMAIL_TAKEN -> {
-                    setLoading(false)
-                    Snackbar.make(view, getString(R.string.email_taken), Snackbar.LENGTH_SHORT)
-                        .show()
-                }
-                else -> {
-                    setLoading(false)
-                    Snackbar.make(view, getString(R.string.success_register), Snackbar.LENGTH_SHORT)
-                        .show()
+                    Snackbar.make(
+                        binding.root, getString(R.string.success_register), Snackbar.LENGTH_SHORT
+                    ).show()
                     findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+                }
+                is Result.Error -> {
+                    setLoading(false)
+                    Snackbar.make(binding.root, getString(R.string.oops), Snackbar.LENGTH_SHORT)
+                        .show()
                 }
             }
         }
-
-        playAnimation()
     }
 
     private fun playAnimation() {
-        val appName = ObjectAnimator.ofFloat(binding?.tvAppName, View.ALPHA, 1f).setDuration(300)
-        val registerName = ObjectAnimator.ofFloat(binding?.registerName, View.ALPHA, 1f).setDuration(300)
-        val registerEmail = ObjectAnimator.ofFloat(binding?.registerEmail, View.ALPHA, 1f).setDuration(300)
-        val registerPassword = ObjectAnimator.ofFloat(binding?.registerPassword, View.ALPHA, 1f).setDuration(300)
-        val btnRegister = ObjectAnimator.ofFloat(binding?.btnRegister, View.ALPHA, 1f).setDuration(300)
+        val appName = ObjectAnimator.ofFloat(binding.tvAppName, View.ALPHA, 1f).setDuration(300)
+        val registerName =
+            ObjectAnimator.ofFloat(binding.registerName, View.ALPHA, 1f).setDuration(300)
+        val registerEmail =
+            ObjectAnimator.ofFloat(binding.registerEmail, View.ALPHA, 1f).setDuration(300)
+        val registerPassword =
+            ObjectAnimator.ofFloat(binding.registerPassword, View.ALPHA, 1f).setDuration(300)
+        val btnRegister =
+            ObjectAnimator.ofFloat(binding.btnRegister, View.ALPHA, 1f).setDuration(300)
 
         AnimatorSet().apply {
             playSequentially(appName, registerName, registerEmail, registerPassword, btnRegister)
@@ -103,11 +103,11 @@ class RegisterFragment : Fragment() {
 
     private fun setLoading(isLoading: Boolean) {
         if (isLoading) {
-            binding?.linearProgressIndicator?.visibility = View.VISIBLE
-            binding?.btnRegister?.isEnabled = false
+            binding.linearProgressIndicator.visibility = View.VISIBLE
+            binding.btnRegister.isEnabled = false
         } else {
-            binding?.linearProgressIndicator?.visibility = View.GONE
-            binding?.btnRegister?.isEnabled = true
+            binding.linearProgressIndicator.visibility = View.GONE
+            binding.btnRegister.isEnabled = true
         }
     }
 
@@ -115,9 +115,9 @@ class RegisterFragment : Fragment() {
         if (formValidation()) {
             with(viewModel) {
                 register(
-                    binding!!.edRegisterName.text.toString(),
-                    binding!!.edRegisterEmail.text.toString(),
-                    binding!!.edRegisterPassword.text.toString()
+                    binding.edRegisterName.text.toString(),
+                    binding.edRegisterEmail.text.toString(),
+                    binding.edRegisterPassword.text.toString()
                 )
             }
         }
@@ -125,41 +125,36 @@ class RegisterFragment : Fragment() {
 
     private fun formValidation(): Boolean {
         var isValid = true
-        if (binding?.edRegisterName?.text.isNullOrEmpty()) {
-            binding?.registerName?.error = getString(R.string.required)
+        if (binding.edRegisterName.text.isNullOrEmpty()) {
+            binding.registerName.error = getString(R.string.required)
             isValid = false
         } else {
-            binding?.registerName?.error = null
+            binding.registerName.error = null
         }
 
-        if (binding?.edRegisterEmail?.text.isNullOrEmpty()) {
-            binding?.registerEmail?.error = getString(R.string.required)
+        if (binding.edRegisterEmail.text.isNullOrEmpty()) {
+            binding.registerEmail.error = getString(R.string.required)
             isValid = false
         } else {
-            if (!Patterns.EMAIL_ADDRESS.matcher(binding?.edRegisterEmail?.text.toString())
+            if (!Patterns.EMAIL_ADDRESS.matcher(binding.edRegisterEmail.text.toString())
                     .matches()
             ) {
-                binding?.registerEmail?.error = getString(R.string.not_valid_email)
+                binding.registerEmail.error = getString(R.string.not_valid_email)
                 isValid = false
             } else {
-                binding?.registerEmail?.error = null
+                binding.registerEmail.error = null
             }
         }
 
-        if (binding?.edRegisterPassword?.text.isNullOrEmpty()) {
-            binding?.registerPassword?.error = getString(R.string.required)
+        if (binding.edRegisterPassword.text.isNullOrEmpty()) {
+            binding.registerPassword.error = getString(R.string.required)
             isValid = false
-        } else if (binding?.edRegisterPassword?.text?.length!! < MIN_PASSWORD_LENGTH) {
-            binding?.registerPassword?.error = getString(R.string.minlength, MIN_PASSWORD_LENGTH)
+        } else if (binding.edRegisterPassword.text!!.length < MIN_PASSWORD_LENGTH) {
+            binding.registerPassword.error = getString(R.string.minlength, MIN_PASSWORD_LENGTH)
             isValid = false
         } else {
-            binding?.registerPassword?.error = null
+            binding.registerPassword.error = null
         }
         return isValid
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
     }
 }
