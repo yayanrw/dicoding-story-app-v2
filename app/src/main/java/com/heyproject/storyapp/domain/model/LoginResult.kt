@@ -19,6 +19,15 @@ fun LoginResultDto.toDomain(): LoginResult {
     )
 }
 
+fun LoginResultDto.toLoggedInUser(): User {
+    return User(
+        userId = userId.orEmpty(),
+        name = name.orEmpty(),
+        token = token.orEmpty(),
+        isLogin = true
+    )
+}
+
 fun LoginResult.toLoggedInUser(): User {
     return User(
         userId = userId,

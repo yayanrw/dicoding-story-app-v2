@@ -15,93 +15,74 @@ import com.google.android.material.snackbar.Snackbar
 import com.heyproject.storyapp.R
 import com.heyproject.storyapp.core.MIN_PASSWORD_LENGTH
 import com.heyproject.storyapp.databinding.FragmentLoginBinding
-import com.heyproject.storyapp.model.UserPreference
-import com.heyproject.storyapp.model.dataStore
 import com.heyproject.storyapp.ui.ViewModelFactory
-import com.heyproject.storyapp.util.RequestState
+import com.heyproject.storyapp.util.Result
 
 class LoginFragment : Fragment() {
+    private var _binding: FragmentLoginBinding? = null
+    val binding get() = _binding!!
 
-    private var binding: FragmentLoginBinding? = null
-    private lateinit var userPreference: UserPreference
     private val viewModel: LoginViewModel by viewModels {
-        ViewModelFactory(userPreference)
+        ViewModelFactory.getInstance(requireContext())
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val fragmentBinding = FragmentLoginBinding.inflate(inflater, container, false)
-        binding = fragmentBinding
-        return fragmentBinding.root
+        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         removeActionBar()
-        userPreference = UserPreference(requireContext().dataStore)
 
-        binding?.apply {
+        binding.apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = viewModel
             loginFragment = this@LoginFragment
         }
 
-        viewModel.getUser().observe(viewLifecycleOwner) {
-            if (it.isLogin) {
-                findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-            }
-        }
+        setObserver()
+        playAnimation()
+    }
 
-        viewModel.requestState.observe(viewLifecycleOwner) {
-            when (it) {
-                RequestState.LOADING -> {
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun setObserver() {
+        viewModel.loginState.observe(viewLifecycleOwner) { loginResult ->
+            when (loginResult) {
+                is Result.Loading -> {
                     setLoading(true)
                 }
-                RequestState.ERROR -> {
+                is Result.Success -> {
                     setLoading(false)
-                    Snackbar.make(view, getString(R.string.oops), Snackbar.LENGTH_SHORT).show()
+                    findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                 }
-                RequestState.INVALID_CREDENTIALS -> {
-                    setLoading(false)
-                    Snackbar.make(
-                        view,
-                        getString(R.string.invalid_credentials),
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-                }
-                RequestState.NO_CONNECTION -> {
-                    setLoading(false)
-                    Snackbar.make(view, getString(R.string.no_connection), Snackbar.LENGTH_SHORT)
+                is Result.Error -> {
+                    Snackbar.make(binding.root, getString(R.string.oops), Snackbar.LENGTH_SHORT)
                         .show()
-                }
-                else -> {
-                    setLoading(false)
                 }
             }
         }
-
-        playAnimation()
     }
 
     private fun setLoading(isLoading: Boolean) {
         if (isLoading) {
-            binding?.linearProgressIndicator?.visibility = View.VISIBLE
-            binding?.btnSignIn?.isEnabled = false
+            binding.linearProgressIndicator.visibility = View.VISIBLE
+            binding.btnSignIn.isEnabled = false
         } else {
-            binding?.linearProgressIndicator?.visibility = View.GONE
-            binding?.btnSignIn?.isEnabled = true
+            binding.linearProgressIndicator.visibility = View.GONE
+            binding.btnSignIn.isEnabled = true
         }
     }
 
     private fun removeActionBar() {
         (activity as AppCompatActivity).supportActionBar?.hide()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
     }
 
     fun goToRegisterScreen() {
