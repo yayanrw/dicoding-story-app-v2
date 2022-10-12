@@ -1,47 +1,31 @@
 package com.heyproject.storyapp.ui.register
 
 import androidx.lifecycle.*
+import com.heyproject.storyapp.data.datasource.remote.response.GeneralResponse
+import com.heyproject.storyapp.data.repository.UserRepository
 import com.heyproject.storyapp.domain.model.User
-import com.heyproject.storyapp.model.UserPreference
-import com.heyproject.storyapp.network.StoryApi
-import com.heyproject.storyapp.util.RequestState
+import com.heyproject.storyapp.util.Result
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.io.IOException
 
+class RegisterViewModel(private val userRepository: UserRepository) : ViewModel() {
 
-class RegisterViewModel(private val pref: UserPreference) : ViewModel() {
-    private val _requestState = MutableLiveData<RequestState>()
-    val requestState: LiveData<RequestState> = _requestState
+    private val _registerState = MutableLiveData<Result<GeneralResponse>>()
+    val registerState: LiveData<Result<GeneralResponse>> = _registerState
 
-    fun register(name: String, email: String, password: String) {
-        viewModelScope.launch {
-            try {
-                _requestState.value = RequestState.LOADING
-                val response =
-                    StoryApi.retrofitService.postRegister(
-                        name,
-                        email,
-                        password
-                    )
-                if (!response.error!!) {
-                    _requestState.value = RequestState.SUCCESS
-                } else {
-                    _requestState.value = RequestState.ERROR
-                }
-            } catch (e: HttpException) {
-                if (e.code() == 400) {
-                    _requestState.value = RequestState.EMAIL_TAKEN
-                } else {
-                    _requestState.value = RequestState.ERROR
-                }
-            } catch (e: IOException) {
-                _requestState.value = RequestState.NO_CONNECTION
+    val user: LiveData<User> = userRepository.getUser().asLiveData()
+
+    fun register(name: String, email: String, password: String) = viewModelScope.launch {
+        try {
+            _registerState.value = Result.Loading()
+            val response = userRepository.register(name, email, password)
+
+            if (!response.error!!) {
+                _registerState.value = Result.Success(response)
+            } else {
+                _registerState.value = Result.Error(response.message.toString())
             }
+        } catch (e: Exception) {
+            _registerState.value = Result.Error(e.message.toString())
         }
-    }
-
-    fun getUser(): LiveData<User> {
-        return pref.getUser().asLiveData()
     }
 }

@@ -18,8 +18,7 @@ import com.heyproject.storyapp.ui.story_detail.StoryDetailViewModel
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_datastore")
 
 class ViewModelFactory(
-    private val userRepository: UserRepository,
-    private val storyRepository: StoryRepository
+    private val userRepository: UserRepository, private val storyRepository: StoryRepository
 ) : ViewModelProvider.NewInstanceFactory() {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -31,7 +30,7 @@ class ViewModelFactory(
                 LoginViewModel(userRepository) as T
             }
             modelClass.isAssignableFrom(RegisterViewModel::class.java) -> {
-                RegisterViewModel(pref) as T
+                RegisterViewModel(userRepository) as T
             }
             modelClass.isAssignableFrom(StoryAddViewModel::class.java) -> {
                 StoryAddViewModel(pref) as T
