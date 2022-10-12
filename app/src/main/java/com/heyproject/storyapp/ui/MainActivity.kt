@@ -13,16 +13,14 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.heyproject.storyapp.R
 import com.heyproject.storyapp.databinding.ActivityMainBinding
-import com.heyproject.storyapp.model.UserPreference
-import com.heyproject.storyapp.model.dataStore
 import com.heyproject.storyapp.ui.home.HomeViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
-    private lateinit var userPreference: UserPreference
+
     private val viewModel: HomeViewModel by viewModels {
-        ViewModelFactory(userPreference)
+        ViewModelFactory.getInstance(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,9 +28,9 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        userPreference = UserPreference(dataStore)
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
         setupActionBarWithNavController(navController)
@@ -45,7 +43,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_logout -> {
-                viewModel.logout()
+                viewModel.logOut()
                 true
             }
             R.id.action_setting -> {

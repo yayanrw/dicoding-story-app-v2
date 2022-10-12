@@ -1,47 +1,49 @@
 package com.heyproject.storyapp.ui.login
 
-import androidx.lifecycle.*
-import com.heyproject.storyapp.domain.model.User
-import com.heyproject.storyapp.model.UserPreference
-import com.heyproject.storyapp.network.StoryApi
-import com.heyproject.storyapp.network.response.LoginResultDto
-import com.heyproject.storyapp.util.RequestState
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.heyproject.storyapp.data.repository.UserRepository
+import com.heyproject.storyapp.domain.model.LoginResult
+import com.heyproject.storyapp.domain.model.toDomain
+import com.heyproject.storyapp.domain.model.toLoggedInUser
+import com.heyproject.storyapp.util.Result
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.io.IOException
 
-class LoginViewModel(private val pref: UserPreference) : ViewModel() {
-    private val _requestState = MutableLiveData<RequestState>()
-    val requestState: LiveData<RequestState> = _requestState
+class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
+
+    private val _loginState = MutableLiveData<Result<LoginResult>>()
+    val loginState: LiveData<Result<LoginResult>> = _loginState
 
     fun signIn(
-        email: String,
-        password: String
+        email: String, password: String
     ) {
         viewModelScope.launch {
+            _loginState.value = Result.Loading()
             try {
-                _requestState.value = RequestState.LOADING
-                val response = StoryApi.retrofitService.postLogin(email, password)
-                if (!response.error!!) {
-                    _requestState.value = RequestState.SUCCESS
-                    pref.saveUser(LoginResultDto().toLoginUser(response.loginResult!!))
-                } else {
-                    _requestState.value = RequestState.ERROR
-                }
+                val response = userRepository.logIn(email, password)
 
-            } catch (e: HttpException) {
-                if (e.code() == 401) {
-                    _requestState.value = RequestState.INVALID_CREDENTIALS
+                if (response.error == false) {
+                    _loginState.value = Result.Success(response.loginResult!!.toDomain())
                 } else {
-                    _requestState.value = RequestState.ERROR
+                    _loginState.value = Result.Error(response.message.toString())
                 }
-            } catch (e: IOException) {
-                _requestState.value = RequestState.NO_CONNECTION
+            } catch (e: Exception) {
+                _loginState.value = Result.Error(e.message.toString())
             }
         }
     }
 
-    fun getUser(): LiveData<User> {
-        return pref.getUser().asLiveData()
+    fun saveUser(loginResult: LoginResult) {
+        viewModelScope.launch {
+            userRepository.saveUser(loginResult.toLoggedInUser())
+        }
+    }
+
+    fun logOut() {
+        viewModelScope.launch {
+            userRepository.logOut()
+        }
     }
 }
