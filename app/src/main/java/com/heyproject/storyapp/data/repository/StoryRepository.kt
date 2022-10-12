@@ -6,6 +6,7 @@ import com.heyproject.storyapp.data.StoryRemoteMediator
 import com.heyproject.storyapp.data.datasource.local.database.StoryDatabase
 import com.heyproject.storyapp.data.datasource.local.entity.StoryEntity
 import com.heyproject.storyapp.data.datasource.remote.api.StoryService
+import com.heyproject.storyapp.data.datasource.remote.response.GeneralResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
@@ -45,8 +46,8 @@ class StoryRepository(
         description: RequestBody,
         lat: RequestBody? = null,
         lon: RequestBody? = null
-    ) {
-        storyService.postStory(
+    ): GeneralResponse {
+        return storyService.postStory(
             generateBearerToken(token),
             file,
             description,

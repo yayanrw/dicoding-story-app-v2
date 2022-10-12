@@ -17,19 +17,17 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import com.heyproject.storyapp.R
 import com.heyproject.storyapp.databinding.ActivityStoryAddBinding
-import com.heyproject.storyapp.model.UserPreference
-import com.heyproject.storyapp.model.dataStore
 import com.heyproject.storyapp.ui.ViewModelFactory
-import com.heyproject.storyapp.util.RequestState
+import com.heyproject.storyapp.util.Result
 import com.heyproject.storyapp.util.rotateBitmap
 import com.heyproject.storyapp.util.uriToFile
 import java.io.File
 
 class StoryAddActivity : AppCompatActivity() {
     private lateinit var binding: ActivityStoryAddBinding
-    private lateinit var userPreference: UserPreference
+
     private val viewModel: StoryAddViewModel by viewModels {
-        ViewModelFactory(userPreference)
+        ViewModelFactory.getInstance(this)
     }
     private var getFile: File? = null
 
@@ -37,52 +35,40 @@ class StoryAddActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityStoryAddBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        userPreference = UserPreference(dataStore)
-
-        if (!allPermissionsGranted()) {
-            ActivityCompat.requestPermissions(
-                this,
-                REQUIRED_PERMISSIONS,
-                REQUEST_CODE_PERMISSIONS
-            )
-        }
+        requestPermission()
 
         binding.apply {
             storyAddActivity = this@StoryAddActivity
         }
 
-        viewModel.getUser().observe(this) {
-            if (!it.isLogin) {
-                finish()
-            }
-        }
+        setObserver()
+    }
 
-        viewModel.requestState.observe(this) {
-            when (it) {
-                RequestState.LOADING -> {
+    private fun requestPermission() {
+        if (!allPermissionsGranted()) {
+            ActivityCompat.requestPermissions(
+                this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
+            )
+        }
+    }
+
+    private fun setObserver() {
+        viewModel.uploadState.observe(this) { result ->
+            when (result) {
+                is Result.Loading -> {
                     setLoading(true)
                 }
-                RequestState.ERROR -> {
-                    setLoading(false)
-                    Snackbar.make(binding.root, getString(R.string.oops), Snackbar.LENGTH_SHORT).show()
-                }
-                RequestState.NO_CONNECTION -> {
+                is Result.Success -> {
                     setLoading(false)
                     Snackbar.make(
-                        binding.root,
-                        getString(R.string.no_connection),
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-                }
-                else -> {
-                    setLoading(false)
-                    Snackbar.make(
-                        binding.root,
-                        getString(R.string.upload_success),
-                        Snackbar.LENGTH_SHORT
+                        binding.root, getString(R.string.upload_success), Snackbar.LENGTH_SHORT
                     ).show()
                     finish()
+                }
+                is Result.Error -> {
+                    setLoading(false)
+                    Snackbar.make(binding.root, getString(R.string.oops), Snackbar.LENGTH_SHORT)
+                        .show()
                 }
             }
         }
@@ -103,17 +89,13 @@ class StoryAddActivity : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (!allPermissionsGranted()) {
                 Toast.makeText(
-                    this,
-                    getString(R.string.failed_get_persmission),
-                    Toast.LENGTH_SHORT
+                    this, getString(R.string.failed_get_persmission), Toast.LENGTH_SHORT
                 ).show()
                 finish()
             }
@@ -137,8 +119,7 @@ class StoryAddActivity : AppCompatActivity() {
             val isBackCamera = it.data?.getBooleanExtra("isBackCamera", true) as Boolean
             getFile = myFile
             val result = rotateBitmap(
-                BitmapFactory.decodeFile(getFile?.path),
-                isBackCamera
+                BitmapFactory.decodeFile(getFile?.path), isBackCamera
             )
 
             binding.ivPreview.setImageBitmap(result)
@@ -182,9 +163,7 @@ class StoryAddActivity : AppCompatActivity() {
         if (getFile == null) {
             isValid = false
             Toast.makeText(
-                this,
-                getString(R.string.choose_image_warn),
-                Toast.LENGTH_SHORT
+                this, getString(R.string.choose_image_warn), Toast.LENGTH_SHORT
             ).show()
         }
         return isValid

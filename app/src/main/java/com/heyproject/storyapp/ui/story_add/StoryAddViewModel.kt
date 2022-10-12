@@ -1,34 +1,36 @@
 package com.heyproject.storyapp.ui.story_add
 
-import androidx.lifecycle.*
-import com.heyproject.storyapp.data.datasource.remote.api.StoryApi
-import com.heyproject.storyapp.domain.model.User
-import com.heyproject.storyapp.model.UserPreference
-import com.heyproject.storyapp.util.RequestState
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.heyproject.storyapp.data.datasource.remote.response.GeneralResponse
+import com.heyproject.storyapp.data.repository.StoryRepository
+import com.heyproject.storyapp.data.repository.UserRepository
+import com.heyproject.storyapp.util.Result
 import com.heyproject.storyapp.util.reduceFileImage
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import retrofit2.HttpException
 import java.io.File
-import java.io.IOException
 
-class StoryAddViewModel(private val pref: UserPreference) : ViewModel() {
-    private val _requestState = MutableLiveData<RequestState>()
-    val requestState: LiveData<RequestState> = _requestState
+class StoryAddViewModel(
+    private val userRepository: UserRepository,
+    private val storyRepository: StoryRepository
+) : ViewModel() {
+    
+    private val _uploadState = MutableLiveData<Result<GeneralResponse>>()
+    val uploadState: LiveData<Result<GeneralResponse>> = _uploadState
 
     fun uploadImage(getFile: File, description: String) {
-        val token = runBlocking {
-            pref.getUser().first().token
-        }
         viewModelScope.launch {
             try {
-                _requestState.value = RequestState.LOADING
+                val token = userRepository.getUser().first().token
+                _uploadState.value = Result.Loading()
                 val file = reduceFileImage(getFile)
                 val descRequestBody = description.toRequestBody("text/plain".toMediaType())
                 val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
@@ -36,26 +38,16 @@ class StoryAddViewModel(private val pref: UserPreference) : ViewModel() {
                     file.name,
                     file.asRequestBody("image/jpeg".toMediaTypeOrNull())
                 )
-                val response = StoryApi.retrofitService.insertStory(
-                    photo = imageMultipart,
-                    description = descRequestBody,
-                    auth = "Bearer $token"
-                )
+                val response = storyRepository.uploadStory(token, imageMultipart, descRequestBody)
 
-                if (!response.error!!) {
-                    _requestState.value = RequestState.SUCCESS
+                if (response.error == false) {
+                    _uploadState.value = Result.Success(response)
                 } else {
-                    _requestState.value = RequestState.ERROR
+                    _uploadState.value = Result.Error(response.message.toString())
                 }
-            } catch (e: HttpException) {
-                _requestState.value = RequestState.ERROR
-            } catch (e: IOException) {
-                _requestState.value = RequestState.NO_CONNECTION
+            } catch (e: Exception) {
+                _uploadState.value = Result.Error(e.message.toString())
             }
         }
-    }
-
-    fun getUser(): LiveData<User> {
-        return pref.getUser().asLiveData()
     }
 }
