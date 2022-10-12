@@ -64,6 +64,7 @@ class LoginFragment : Fragment() {
                     findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                 }
                 is Result.Error -> {
+                    setLoading(false)
                     Snackbar.make(binding.root, getString(R.string.oops), Snackbar.LENGTH_SHORT)
                         .show()
                 }
