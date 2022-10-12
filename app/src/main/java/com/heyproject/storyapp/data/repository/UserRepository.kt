@@ -13,7 +13,7 @@ class UserRepository(
     private val storyService: StoryService,
     private val userDataStore: UserDataStore
 ) {
-    suspend fun login(email: String, password: String) = storyService.postLogin(email, password)
+    suspend fun logIn(email: String, password: String) = storyService.postLogin(email, password)
 
     suspend fun register(name: String, email: String, password: String) =
         storyService.postRegister(name, email, password)

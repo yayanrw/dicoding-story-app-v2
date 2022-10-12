@@ -9,10 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.heyproject.storyapp.R
-import com.heyproject.storyapp.adapter.LoadingStateAdapter
-import com.heyproject.storyapp.adapter.StoryAdapter
 import com.heyproject.storyapp.databinding.FragmentHomeBinding
 import com.heyproject.storyapp.ui.ViewModelFactory
+import com.heyproject.storyapp.ui.adapter.LoadingStateAdapter
+import com.heyproject.storyapp.ui.adapter.StoryAdapter
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -37,7 +37,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         showActionBar()
 
-        binding?.apply {
+        binding.apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = viewModel
             homeFragment = this@HomeFragment
