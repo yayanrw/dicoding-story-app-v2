@@ -49,7 +49,6 @@ class HomeFragment : Fragment(), MenuProvider {
             homeFragment = this@HomeFragment
             rvStory.adapter = StoryAdapter()
             rvStory.setHasFixedSize(true)
-            screenError.homeFragment = this@HomeFragment
         }
 
         setObserver()

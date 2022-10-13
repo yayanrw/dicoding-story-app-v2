@@ -34,14 +34,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <include
-                android:id="@+id/screen_error"
-                layout="@layout/screen_error"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_story"
                 android:layout_width="match_parent"
