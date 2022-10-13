@@ -1,12 +1,15 @@
 package com.heyproject.storyapp.ui.home
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.provider.Settings
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.heyproject.storyapp.R
 import com.heyproject.storyapp.databinding.FragmentHomeBinding
@@ -14,7 +17,7 @@ import com.heyproject.storyapp.ui.ViewModelFactory
 import com.heyproject.storyapp.ui.adapter.LoadingStateAdapter
 import com.heyproject.storyapp.ui.adapter.StoryAdapter
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), MenuProvider {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
@@ -30,6 +33,9 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
         return binding.root
     }
 
@@ -94,5 +100,26 @@ class HomeFragment : Fragment() {
 
     private fun showActionBar() {
         (activity as AppCompatActivity).supportActionBar?.show()
+    }
+
+    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.home_menu, menu)
+    }
+
+    override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+        return when (menuItem.itemId) {
+            R.id.action_logout -> {
+                viewModel.logOut()
+                findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
+                true
+            }
+            R.id.action_setting -> {
+                startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
+                true
+            }
+            else -> {
+                true
+            }
+        }
     }
 }
