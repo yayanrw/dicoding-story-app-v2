@@ -33,7 +33,7 @@ class ViewModelFactory(
                 RegisterViewModel(userRepository) as T
             }
             modelClass.isAssignableFrom(StoryAddViewModel::class.java) -> {
-                StoryAddViewModel(pref) as T
+                StoryAddViewModel(userRepository, storyRepository) as T
             }
             modelClass.isAssignableFrom(StoryDetailViewModel::class.java) -> {
                 StoryDetailViewModel(pref) as T

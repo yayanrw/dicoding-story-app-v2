@@ -44,6 +44,22 @@ class StoryAddActivity : AppCompatActivity() {
         setObserver()
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE_PERMISSIONS) {
+            if (!allPermissionsGranted()) {
+                Toast.makeText(
+                    this, getString(R.string.failed_get_persmission), Toast.LENGTH_SHORT
+                ).show()
+                finish()
+            }
+        }
+    }
+
+
+
     private fun requestPermission() {
         if (!allPermissionsGranted()) {
             ActivityCompat.requestPermissions(
@@ -85,20 +101,6 @@ class StoryAddActivity : AppCompatActivity() {
             binding.buttonAdd.isEnabled = true
             binding.btnCamera.isEnabled = true
             binding.btnGallery.isEnabled = true
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_CODE_PERMISSIONS) {
-            if (!allPermissionsGranted()) {
-                Toast.makeText(
-                    this, getString(R.string.failed_get_persmission), Toast.LENGTH_SHORT
-                ).show()
-                finish()
-            }
         }
     }
 
