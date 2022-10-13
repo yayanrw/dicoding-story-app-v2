@@ -76,8 +76,9 @@ class HomeFragment : Fragment(), MenuProvider {
     }
 
     private fun fetchStories() {
+//        token = args.token ?: ""
         storyAdapter = StoryAdapter()
-        viewModel.fetchStories(this.token).observe(viewLifecycleOwner) {
+        viewModel.fetchStories(token).observe(viewLifecycleOwner) {
             storyAdapter.submitData(lifecycle, it)
         }
         storyAdapter.onItemClick = { selected ->

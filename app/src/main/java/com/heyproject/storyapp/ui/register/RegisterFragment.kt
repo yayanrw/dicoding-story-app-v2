@@ -53,12 +53,6 @@ class RegisterFragment : Fragment() {
     }
 
     private fun setObserver() {
-        viewModel.user.observe(viewLifecycleOwner) {
-            if (it.isLogin) {
-                findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
-            }
-        }
-
         viewModel.registerState.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Result.Loading -> {
