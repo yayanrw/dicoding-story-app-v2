@@ -13,7 +13,6 @@ import com.heyproject.storyapp.ui.home.HomeViewModel
 import com.heyproject.storyapp.ui.login.LoginViewModel
 import com.heyproject.storyapp.ui.register.RegisterViewModel
 import com.heyproject.storyapp.ui.story_add.StoryAddViewModel
-import com.heyproject.storyapp.ui.story_detail.StoryDetailViewModel
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_datastore")
 
@@ -34,9 +33,6 @@ class ViewModelFactory(
             }
             modelClass.isAssignableFrom(StoryAddViewModel::class.java) -> {
                 StoryAddViewModel(userRepository, storyRepository) as T
-            }
-            modelClass.isAssignableFrom(StoryDetailViewModel::class.java) -> {
-                StoryDetailViewModel(pref) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
