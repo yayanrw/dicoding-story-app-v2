@@ -20,6 +20,10 @@ class HomeViewModel(
     private val _user = MutableLiveData<User>()
     val user: LiveData<User> = _user
 
+    init {
+        fetchUser()
+    }
+
     fun fetchStories(token: String): LiveData<PagingData<Story>> =
         storyRepository.getStories(token).map { result ->
             result.map { storyEntity ->
