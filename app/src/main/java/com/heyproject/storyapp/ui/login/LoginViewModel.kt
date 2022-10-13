@@ -1,11 +1,13 @@
 package com.heyproject.storyapp.ui.login
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.heyproject.storyapp.data.repository.UserRepository
 import com.heyproject.storyapp.domain.model.LoginResult
 import com.heyproject.storyapp.domain.model.User
 import com.heyproject.storyapp.domain.model.toDomain
-import com.heyproject.storyapp.domain.model.toLoggedInUser
 import com.heyproject.storyapp.util.Result
 import kotlinx.coroutines.launch
 
@@ -24,7 +26,6 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
 
                 if (response.error == false) {
                     _loginState.value = Result.Success(response.loginResult!!.toDomain())
-                    userRepository.saveUser(response.loginResult.toLoggedInUser())
                 } else {
                     _loginState.value = Result.Error(response.message.toString())
                 }
@@ -34,9 +35,7 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
         }
     }
 
-    fun logOut() {
-        viewModelScope.launch {
-            userRepository.logOut()
-        }
+    fun saveUser(user: User) = viewModelScope.launch {
+        userRepository.saveUser(user)
     }
 }
