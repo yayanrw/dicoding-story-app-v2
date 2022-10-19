@@ -3,9 +3,7 @@ package com.heyproject.storyapp.ui.home
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -33,11 +31,6 @@ class HomeFragment : Fragment(), MenuProvider {
         ViewModelFactory.getInstance(requireContext())
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d("Current Page", "HomeFragment")
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -50,7 +43,6 @@ class HomeFragment : Fragment(), MenuProvider {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        showActionBar()
 
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
@@ -86,28 +78,22 @@ class HomeFragment : Fragment(), MenuProvider {
         storyAdapter = StoryAdapter()
         val token = sharedViewModel.user.value?.token ?: ""
 
-        if (token != "") {
-            viewModel.fetchStories(token).observe(viewLifecycleOwner) {
-                storyAdapter.submitData(lifecycle, it)
-            }
-            storyAdapter.onItemClick = { selected ->
-                val toDetailFragment =
-                    HomeFragmentDirections.actionHomeFragmentToStoryDetailFragment(selected)
-                findNavController().navigate(toDetailFragment)
-            }
-
-            binding.rvStory.adapter = storyAdapter.withLoadStateFooter(footer = LoadingStateAdapter {
-                storyAdapter.retry()
-            })
+        viewModel.fetchStories(token).observe(viewLifecycleOwner) {
+            storyAdapter.submitData(lifecycle, it)
         }
+        storyAdapter.onItemClick = { selected ->
+            val toDetailFragment =
+                HomeFragmentDirections.actionHomeFragmentToStoryDetailFragment(selected)
+            findNavController().navigate(toDetailFragment)
+        }
+
+        binding.rvStory.adapter = storyAdapter.withLoadStateFooter(footer = LoadingStateAdapter {
+            storyAdapter.retry()
+        })
     }
 
     fun goToStoryAddScreen() {
         findNavController().navigate(R.id.action_homeFragment_to_storyAddActivity)
-    }
-
-    private fun showActionBar() {
-        (activity as AppCompatActivity).supportActionBar?.show()
     }
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
