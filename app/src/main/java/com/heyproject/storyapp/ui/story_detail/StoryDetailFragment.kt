@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.heyproject.storyapp.databinding.FragmentStoryDetailBinding
@@ -25,16 +24,11 @@ class StoryDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        removeActionBar()
 
         binding.apply {
             story = args.story
         }
         binding.executePendingBindings()
-    }
-
-    private fun removeActionBar() {
-        (activity as AppCompatActivity).supportActionBar?.hide()
     }
 
     override fun onDestroyView() {

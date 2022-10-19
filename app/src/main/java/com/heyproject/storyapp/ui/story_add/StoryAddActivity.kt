@@ -35,6 +35,8 @@ class StoryAddActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityStoryAddBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         requestPermission()
 
         binding.apply {
@@ -58,7 +60,10 @@ class StoryAddActivity : AppCompatActivity() {
         }
     }
 
-
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
 
     private fun requestPermission() {
         if (!allPermissionsGranted()) {

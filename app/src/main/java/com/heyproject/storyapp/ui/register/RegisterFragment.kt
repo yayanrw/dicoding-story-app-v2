@@ -35,7 +35,6 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        removeActionBar()
 
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
@@ -89,10 +88,6 @@ class RegisterFragment : Fragment() {
             playSequentially(appName, registerName, registerEmail, registerPassword, btnRegister)
             start()
         }
-    }
-
-    private fun removeActionBar() {
-        (activity as AppCompatActivity).supportActionBar?.hide()
     }
 
     private fun setLoading(isLoading: Boolean) {

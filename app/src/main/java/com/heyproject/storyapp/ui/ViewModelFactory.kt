@@ -23,7 +23,7 @@ class ViewModelFactory(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
-                HomeViewModel(userRepository, storyRepository) as T
+                HomeViewModel(storyRepository) as T
             }
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
                 LoginViewModel(userRepository) as T
@@ -33,6 +33,9 @@ class ViewModelFactory(
             }
             modelClass.isAssignableFrom(StoryAddViewModel::class.java) -> {
                 StoryAddViewModel(userRepository, storyRepository) as T
+            }
+            modelClass.isAssignableFrom(SharedViewModel::class.java) -> {
+                SharedViewModel(userRepository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

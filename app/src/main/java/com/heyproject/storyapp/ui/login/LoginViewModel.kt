@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.heyproject.storyapp.data.repository.UserRepository
 import com.heyproject.storyapp.domain.model.LoginResult
-import com.heyproject.storyapp.domain.model.User
 import com.heyproject.storyapp.domain.model.toDomain
 import com.heyproject.storyapp.util.Result
 import kotlinx.coroutines.launch
@@ -33,9 +32,5 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
                 _loginState.value = Result.Error(e.message.toString())
             }
         }
-    }
-
-    fun saveUser(user: User) = viewModelScope.launch {
-        userRepository.saveUser(user)
     }
 }

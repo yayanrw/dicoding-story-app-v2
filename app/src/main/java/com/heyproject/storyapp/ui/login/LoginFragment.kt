@@ -3,12 +3,14 @@ package com.heyproject.storyapp.ui.login
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
@@ -16,6 +18,7 @@ import com.heyproject.storyapp.R
 import com.heyproject.storyapp.core.MIN_PASSWORD_LENGTH
 import com.heyproject.storyapp.databinding.FragmentLoginBinding
 import com.heyproject.storyapp.domain.model.toLoggedInUser
+import com.heyproject.storyapp.ui.SharedViewModel
 import com.heyproject.storyapp.ui.ViewModelFactory
 import com.heyproject.storyapp.util.Result
 
@@ -25,6 +28,14 @@ class LoginFragment : Fragment() {
 
     private val viewModel: LoginViewModel by viewModels {
         ViewModelFactory.getInstance(requireContext())
+    }
+    private val sharedViewModel: SharedViewModel by activityViewModels {
+        ViewModelFactory.getInstance(requireContext())
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.d("Current Page", "LoginFragment")
     }
 
     override fun onCreateView(
@@ -37,7 +48,6 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        removeActionBar()
 
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
@@ -62,14 +72,18 @@ class LoginFragment : Fragment() {
                 }
                 is Result.Success -> loginResult.data?.let {
                     setLoading(false)
-                    viewModel.saveUser(it.toLoggedInUser())
-                    findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                    sharedViewModel.saveUser(it.toLoggedInUser())
                 }
                 is Result.Error -> {
                     setLoading(false)
                     Snackbar.make(binding.root, getString(R.string.oops), Snackbar.LENGTH_SHORT)
                         .show()
                 }
+            }
+        }
+        sharedViewModel.user.observe(viewLifecycleOwner) { user ->
+            if (user.isLogin) {
+                findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
             }
         }
     }
@@ -82,10 +96,6 @@ class LoginFragment : Fragment() {
             binding.linearProgressIndicator.visibility = View.GONE
             binding.btnSignIn.isEnabled = true
         }
-    }
-
-    private fun removeActionBar() {
-        (activity as AppCompatActivity).supportActionBar?.hide()
     }
 
     fun goToRegisterScreen() {

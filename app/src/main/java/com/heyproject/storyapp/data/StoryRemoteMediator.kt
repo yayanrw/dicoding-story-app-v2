@@ -16,7 +16,7 @@ Written by Yayan Rahmat Wijaya on 10/7/2022 15:31
 Github : https://github.com/yayanrw
  **/
 
-@ExperimentalPagingApi
+@OptIn(ExperimentalPagingApi::class)
 class StoryRemoteMediator(
     private val storyDatabase: StoryDatabase,
     private val storyService: StoryService,
