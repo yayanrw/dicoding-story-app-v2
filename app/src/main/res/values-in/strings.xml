@@ -36,11 +36,11 @@
     <string name="appwidget_text">Banner Cerita</string>
     <string name="empty_text">Tidak ada data</string>
     <string name="upload_success">Berhasil mengunggah gambar</string>
-    <string name="please_activate_location_message">Please activate your location services</string>
-    <string name="location_permission_denied">Location permission not allowed</string>
-    <string name="location_permission_denied_action">Change Setting</string>
-    <string name="style_map_failed">Style parsing failed.</string>
-    <string name="style_map_error">Can\'t find style. Error: %s</string>
-    <string name="maps">Maps</string>
-    <string name="share_location">Share location?</string>
+    <string name="please_activate_location_message">Mohon mengaktifkan servis lokasi pada ponsel anda</string>
+    <string name="location_permission_denied">Perijinan lokasi tidak disetujui</string>
+    <string name="location_permission_denied_action">Ubah Perijinan</string>
+    <string name="style_map_failed">Gagal menerapkan tema pada peta.</string>
+    <string name="style_map_error">Tidak dapat menemukan gaya peta. Kesalahan: %s</string>
+    <string name="maps">Peta</string>
+    <string name="share_location">Membagikan lokasi?</string>
 </resources>
