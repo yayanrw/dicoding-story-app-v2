@@ -42,4 +42,5 @@
     <string name="style_map_failed">Style parsing failed.</string>
     <string name="style_map_error">Can\'t find style. Error: %s</string>
     <string name="maps">Maps</string>
+    <string name="share_location">Share location?</string>
 </resources>

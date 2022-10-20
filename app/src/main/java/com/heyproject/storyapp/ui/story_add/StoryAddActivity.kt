@@ -5,8 +5,10 @@ import android.content.Intent
 import android.content.Intent.ACTION_GET_CONTENT
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -14,6 +16,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
 import com.heyproject.storyapp.R
 import com.heyproject.storyapp.databinding.ActivityStoryAddBinding
@@ -25,11 +29,14 @@ import java.io.File
 
 class StoryAddActivity : AppCompatActivity() {
     private lateinit var binding: ActivityStoryAddBinding
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private val viewModel: StoryAddViewModel by viewModels {
         ViewModelFactory.getInstance(this)
     }
+
     private var getFile: File? = null
+    private var location: Location? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +50,16 @@ class StoryAddActivity : AppCompatActivity() {
             storyAddActivity = this@StoryAddActivity
         }
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         setObserver()
+
+        binding.switchLoc.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                getCurrentLocation()
+            } else {
+                this.location = null
+            }
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -64,6 +80,56 @@ class StoryAddActivity : AppCompatActivity() {
         onBackPressed()
         return true
     }
+
+    private fun getCurrentLocation() {
+        if (ContextCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            fusedLocationClient.lastLocation.addOnSuccessListener { currentLocation ->
+                if (currentLocation != null) {
+                    this.location = currentLocation
+                } else {
+                    Toast.makeText(
+                        this,
+                        getString(R.string.please_activate_location_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    binding.switchLoc.isChecked = false
+                }
+            }
+        } else {
+            requestPermissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            )
+        }
+    }
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            when {
+                permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
+                    getCurrentLocation()
+                }
+                else -> {
+                    Snackbar.make(
+                        binding.root,
+                        getString(R.string.location_permission_denied),
+                        Snackbar.LENGTH_SHORT
+                    ).setAction(getString(R.string.location_permission_denied_action)) {
+                        Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).also { intent ->
+                            val uri = Uri.fromParts("package", packageName, null)
+                            intent.data = uri
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            startActivity(intent)
+                        }
+                    }.show()
+                    binding.switchLoc.isChecked = false
+                }
+            }
+        }
 
     private fun requestPermission() {
         if (!allPermissionsGranted()) {
@@ -154,7 +220,12 @@ class StoryAddActivity : AppCompatActivity() {
 
     fun uploadImage() {
         if (formValidation()) {
-            viewModel.uploadImage(getFile!!, binding.edAddDescription.text.toString())
+            viewModel.uploadImage(
+                getFile!!,
+                binding.edAddDescription.text.toString(),
+                location?.latitude,
+                location?.longitude
+            )
         }
     }
 

@@ -14,19 +14,21 @@ import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
 class StoryAddViewModel(
-    private val userRepository: UserRepository,
-    private val storyRepository: StoryRepository
+    private val userRepository: UserRepository, private val storyRepository: StoryRepository
 ) : ViewModel() {
-    
+
     private val _uploadState = MutableLiveData<Result<GeneralResponse>>()
     val uploadState: LiveData<Result<GeneralResponse>> = _uploadState
 
-    fun uploadImage(getFile: File, description: String) {
+    fun uploadImage(
+        getFile: File, description: String, latitude: Double?, longitude: Double?
+    ) {
         viewModelScope.launch {
             try {
                 val token = userRepository.getUser().first().token
@@ -34,11 +36,17 @@ class StoryAddViewModel(
                 val file = reduceFileImage(getFile)
                 val descRequestBody = description.toRequestBody("text/plain".toMediaType())
                 val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
-                    "photo",
-                    file.name,
-                    file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                    "photo", file.name, file.asRequestBody("image/jpeg".toMediaTypeOrNull())
                 )
-                val response = storyRepository.uploadStory(token, imageMultipart, descRequestBody)
+                var lat: RequestBody? = null
+                var lon: RequestBody? = null
+
+                if (latitude != null || longitude != null) {
+                    lat = latitude.toString().toRequestBody("text/plain".toMediaType())
+                    lon = longitude.toString().toRequestBody("text/plain".toMediaType())
+                }
+                val response =
+                    storyRepository.uploadStory(token, imageMultipart, descRequestBody, lat, lon)
 
                 if (response.error == false) {
                     _uploadState.value = Result.Success(response)
