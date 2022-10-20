@@ -11,6 +11,7 @@ import com.heyproject.storyapp.data.repository.UserRepository
 import com.heyproject.storyapp.di.Injection
 import com.heyproject.storyapp.ui.home.HomeViewModel
 import com.heyproject.storyapp.ui.login.LoginViewModel
+import com.heyproject.storyapp.ui.maps.MapsViewModel
 import com.heyproject.storyapp.ui.register.RegisterViewModel
 import com.heyproject.storyapp.ui.story_add.StoryAddViewModel
 
@@ -36,6 +37,9 @@ class ViewModelFactory(
             }
             modelClass.isAssignableFrom(SharedViewModel::class.java) -> {
                 SharedViewModel(userRepository) as T
+            }
+            modelClass.isAssignableFrom(MapsViewModel::class.java) -> {
+                MapsViewModel(storyRepository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

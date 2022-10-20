@@ -33,6 +33,18 @@ fun StoryDto.toEntity(): StoryEntity {
     )
 }
 
+fun StoryDto.toDomain(): Story {
+    return Story(
+        photoUrl = photoUrl,
+        createdAt = createdAt,
+        name = name,
+        description = description,
+        lon = lon,
+        id = id,
+        lat = lat
+    )
+}
+
 fun StoryEntity.toDomain(): Story {
     return Story(
         photoUrl = photoUrl,

@@ -31,8 +31,14 @@
     <string name="failed_get_persmission">Failed to get a permission</string>
     <string name="choose_picture">Choose a picture</string>
     <string name="choose_image_warn">Please choose image file firstly</string>
-    <string name="setting">Setting</string>
+    <string name="lang_preference">Language Preference</string>
     <string name="appwidget_text">Stories Banner</string>
     <string name="empty_text">No Data</string>
     <string name="upload_success">Successfully uploaded image</string>
+    <string name="please_activate_location_message">Please activate your location services</string>
+    <string name="location_permission_denied">Location permission not allowed</string>
+    <string name="location_permission_denied_action">Change Setting</string>
+    <string name="style_map_failed">Style parsing failed.</string>
+    <string name="style_map_error">Can\'t find style. Error: %s</string>
+    <string name="maps">Maps</string>
 </resources>

@@ -30,10 +30,16 @@
     <string name="failed_open_camera">Gagal memunculkan kamera</string>
     <string name="failed_take_photo">Gagal mengambil gambar</string>
     <string name="failed_get_persmission">Gagal mendapatkan izin</string>
-    <string name="choose_picture">Pilih gambar</string>
+    <string name="choose_picture">Pilih gambsar</string>
     <string name="choose_image_warn">Silakan pilih file gambar terlebih dahulu</string>
-    <string name="setting">Pengaturan</string>
+    <string name="lang_preference">Pilihan Bahasa</string>
     <string name="appwidget_text">Banner Cerita</string>
     <string name="empty_text">Tidak ada data</string>
     <string name="upload_success">Berhasil mengunggah gambar</string>
+    <string name="please_activate_location_message">Please activate your location services</string>
+    <string name="location_permission_denied">Location permission not allowed</string>
+    <string name="location_permission_denied_action">Change Setting</string>
+    <string name="style_map_failed">Style parsing failed.</string>
+    <string name="style_map_error">Can\'t find style. Error: %s</string>
+    <string name="maps">Maps</string>
 </resources>

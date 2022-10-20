@@ -110,6 +110,10 @@ class HomeFragment : Fragment(), MenuProvider {
                 startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
                 true
             }
+            R.id.action_maps -> {
+                findNavController().navigate(R.id.action_homeFragment_to_mapsFragment)
+                true
+            }
             else -> {
                 true
             }
