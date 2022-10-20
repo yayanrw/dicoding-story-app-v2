@@ -21,11 +21,6 @@
     <string name="description">Keterangan</string>
     <string name="upload">Unggah</string>
     <string name="oops">Ups! Ada yang tidak beres!</string>
-    <string name="no_connection">Tidak dapat menjangkau server, periksa koneksi internet Anda.</string>
-    <string name="no_data_available">Tidak ada data yang tersedia</string>
-    <string name="refresh">Segarkan</string>
-    <string name="invalid_credentials">Email atau kata sandi Anda tidak valid</string>
-    <string name="email_taken">Email ini sudah ada</string>
     <string name="success_register">Daftar berhasil, silakan masuk untuk melanjutkan</string>
     <string name="failed_open_camera">Gagal memunculkan kamera</string>
     <string name="failed_take_photo">Gagal mengambil gambar</string>
@@ -33,8 +28,6 @@
     <string name="choose_picture">Pilih gambsar</string>
     <string name="choose_image_warn">Silakan pilih file gambar terlebih dahulu</string>
     <string name="lang_preference">Pilihan Bahasa</string>
-    <string name="appwidget_text">Banner Cerita</string>
-    <string name="empty_text">Tidak ada data</string>
     <string name="upload_success">Berhasil mengunggah gambar</string>
     <string name="please_activate_location_message">Mohon mengaktifkan servis lokasi pada ponsel anda</string>
     <string name="location_permission_denied">Perijinan lokasi tidak disetujui</string>
@@ -43,4 +36,5 @@
     <string name="style_map_error">Tidak dapat menemukan gaya peta. Kesalahan: %s</string>
     <string name="maps">Peta</string>
     <string name="share_location">Membagikan lokasi?</string>
+    <string name="go_retry">Ulangi</string>
 </resources>

@@ -27,7 +27,7 @@ class HomeFragment : Fragment(), MenuProvider {
     private val viewModel: HomeViewModel by viewModels {
         ViewModelFactory.getInstance(requireContext())
     }
-    private val sharedViewModel: SharedViewModel by activityViewModels() {
+    private val sharedViewModel: SharedViewModel by activityViewModels {
         ViewModelFactory.getInstance(requireContext())
     }
 

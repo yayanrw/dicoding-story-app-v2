@@ -8,23 +8,22 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.heyproject.storyapp.R
-import com.heyproject.storyapp.core.MIN_PASSWORD_LENGTH
 import com.heyproject.storyapp.databinding.FragmentLoginBinding
 import com.heyproject.storyapp.domain.model.toLoggedInUser
 import com.heyproject.storyapp.ui.SharedViewModel
 import com.heyproject.storyapp.ui.ViewModelFactory
+import com.heyproject.storyapp.util.MIN_PASSWORD_LENGTH
 import com.heyproject.storyapp.util.Result
 
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
-    val binding get() = _binding!!
+    private val binding get() = _binding!!
 
     private val viewModel: LoginViewModel by viewModels {
         ViewModelFactory.getInstance(requireContext())

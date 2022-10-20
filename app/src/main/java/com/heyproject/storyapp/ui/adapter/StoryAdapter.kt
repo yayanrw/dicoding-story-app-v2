@@ -12,7 +12,7 @@ class StoryAdapter :
     PagingDataAdapter<Story, StoryAdapter.StoryViewHolder>(DiffCallback) {
     var onItemClick: ((Story) -> Unit)? = null
 
-    inner class StoryViewHolder(var binding: ItemStoryBinding) :
+    inner class StoryViewHolder(private var binding: ItemStoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(storyData: Story?) {
             binding.apply {

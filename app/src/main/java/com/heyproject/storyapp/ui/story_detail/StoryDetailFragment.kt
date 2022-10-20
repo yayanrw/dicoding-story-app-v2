@@ -10,7 +10,7 @@ import com.heyproject.storyapp.databinding.FragmentStoryDetailBinding
 
 class StoryDetailFragment : Fragment() {
     private var _binding: FragmentStoryDetailBinding? = null
-    val binding get() = _binding!!
+    private val binding get() = _binding!!
 
     private val args: StoryDetailFragmentArgs by navArgs()
 

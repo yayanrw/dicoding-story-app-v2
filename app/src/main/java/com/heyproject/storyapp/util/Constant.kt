@@ -1,3 +1,3 @@
-package com.heyproject.storyapp.core
+package com.heyproject.storyapp.util
 
 const val MIN_PASSWORD_LENGTH = 6
