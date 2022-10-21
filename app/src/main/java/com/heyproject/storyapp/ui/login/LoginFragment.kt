@@ -64,22 +64,6 @@ class LoginFragment : Fragment() {
     }
 
     private fun setObserver() {
-        viewModel.loginState.observe(viewLifecycleOwner) { loginResult ->
-            when (loginResult) {
-                is Result.Loading -> {
-                    setLoading(true)
-                }
-                is Result.Success -> loginResult.data?.let {
-                    setLoading(false)
-                    sharedViewModel.saveUser(it.toLoggedInUser())
-                }
-                is Result.Error -> {
-                    setLoading(false)
-                    Snackbar.make(binding.root, getString(R.string.oops), Snackbar.LENGTH_SHORT)
-                        .show()
-                }
-            }
-        }
         sharedViewModel.user.observe(viewLifecycleOwner) { user ->
             if (user.isLogin) {
                 findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
@@ -106,7 +90,22 @@ class LoginFragment : Fragment() {
             viewModel.signIn(
                 binding.edLoginEmail.text.toString(),
                 binding.edLoginPassword.text.toString()
-            )
+            ).observe(viewLifecycleOwner) { loginResult ->
+                when (loginResult) {
+                    is Result.Loading -> {
+                        setLoading(true)
+                    }
+                    is Result.Success -> loginResult.data?.let {
+                        setLoading(false)
+                        sharedViewModel.saveUser(it.toLoggedInUser())
+                    }
+                    is Result.Error -> {
+                        setLoading(false)
+                        Snackbar.make(binding.root, getString(R.string.oops), Snackbar.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+            }
         }
     }
 
