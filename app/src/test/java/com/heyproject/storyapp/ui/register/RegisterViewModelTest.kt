@@ -31,7 +31,7 @@ class RegisterViewModelTest {
     @Mock
     private lateinit var userRepository: UserRepository
     private lateinit var registerViewModel: RegisterViewModel
-    private val dummyRegisterResponse = DataDummy.generateDummyRegisterResponse()
+    private val dummyRegisterResponse = DataDummy.generateDummyGeneralResponse()
 
     private val dummyName = "name"
     private val dummyEmail = "email@mail.com"
