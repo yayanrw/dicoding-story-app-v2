@@ -100,7 +100,6 @@ class MapsFragment : Fragment() {
                     ).show()
                 }
             }
-
         } else {
             requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
@@ -108,8 +107,7 @@ class MapsFragment : Fragment() {
 
     private fun markStoryLocation() {
         val token = sharedViewModel.user.value?.token ?: ""
-        mapsViewModel.fetchAllStoryWithLocation(token)
-        mapsViewModel.stories.observe(viewLifecycleOwner) { result ->
+        mapsViewModel.fetchAllStoryWithLocation(token).observe(viewLifecycleOwner) { result ->
             result.data?.let { stories ->
                 stories.forEach { story ->
                     if (story.lat != null && story.lon != null) {
