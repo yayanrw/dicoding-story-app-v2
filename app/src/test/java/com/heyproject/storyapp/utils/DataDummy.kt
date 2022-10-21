@@ -1,6 +1,7 @@
 package com.heyproject.storyapp.utils
 
 import com.heyproject.storyapp.data.datasource.remote.dto.LoginResultDto
+import com.heyproject.storyapp.data.datasource.remote.response.GeneralResponse
 import com.heyproject.storyapp.data.datasource.remote.response.LoginResponse
 
 /**
@@ -21,5 +22,9 @@ object DataDummy {
             error = false,
             message = "success"
         )
+    }
+
+    fun generateDummyRegisterResponse(): GeneralResponse {
+        return GeneralResponse(error = false, message = "success")
     }
 }
