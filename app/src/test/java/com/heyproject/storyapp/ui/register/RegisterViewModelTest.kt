@@ -43,7 +43,7 @@ class RegisterViewModelTest {
     }
 
     @Test
-    fun `Register success with success result`() {
+    fun `Register Success with success result`() {
         val expectedResponse = MutableLiveData<Result<GeneralResponse>>()
         expectedResponse.value = Result.Success(dummyRegisterResponse)
 
@@ -59,5 +59,23 @@ class RegisterViewModelTest {
         Assert.assertNotNull(actualResponse)
         Assert.assertTrue(actualResponse is Result.Success)
         Assert.assertEquals(dummyRegisterResponse, (actualResponse as Result.Success).data)
+    }
+
+    @Test
+    fun `Register Failed with error result`() {
+        val expectedResponse = MutableLiveData<Result<GeneralResponse>>()
+        expectedResponse.value = Result.Error("Error")
+
+        `when`(userRepository.register(dummyName, dummyEmail, dummyPassword)).thenReturn(
+            expectedResponse
+        )
+
+        val actualResponse =
+            registerViewModel.register(dummyName, dummyEmail, dummyPassword).getOrAwaitValue()
+
+        Mockito.verify(userRepository).register(dummyName, dummyEmail, dummyPassword)
+
+        Assert.assertNotNull(actualResponse)
+        Assert.assertTrue(actualResponse is Result.Error)
     }
 }
