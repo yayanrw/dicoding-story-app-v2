@@ -2,12 +2,12 @@ package com.heyproject.storyapp.ui.login
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import com.heyproject.storyapp.data.repository.UserRepository
 import com.heyproject.storyapp.domain.model.LoginResult
 import com.heyproject.storyapp.domain.model.toDomain
 import com.heyproject.storyapp.util.Result
 import com.heyproject.storyapp.utils.DataDummy
+import com.heyproject.storyapp.utils.getOrAwaitValue
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
@@ -44,21 +44,17 @@ class LoginViewModelTest {
 
     @Test
     fun `Login Success with result success`() {
-        val observer = Observer<Result<LoginResult>> {}
+        val expectedResponse = MutableLiveData<Result<LoginResult>>()
+        expectedResponse.value = Result.Success(dummyLoginResponse.loginResult!!.toDomain())
 
-        try {
-            val expectedResponse = MutableLiveData<Result<LoginResult>>()
-            expectedResponse.value = Result.Success(dummyLoginResponse.loginResult!!.toDomain())
+        `when`(userRepository.logIn(dummyEmail, dummyPassword)).thenReturn(expectedResponse)
+        val actualResponse =
+            loginViewModel.signIn(dummyEmail, dummyPassword).getOrAwaitValue()
 
-            `when`(userRepository.logIn(dummyEmail, dummyPassword)).thenReturn(expectedResponse)
-            val actualResponse =
-                loginViewModel.signIn(dummyEmail, dummyPassword).observeForever(observer)
+        Mockito.verify(userRepository).logIn(dummyEmail, dummyPassword)
 
-            Mockito.verify(userRepository).logIn(dummyEmail, dummyPassword)
-            Assert.assertNotNull(actualResponse)
-        } finally {
-            loginViewModel.signIn(dummyEmail, dummyPassword).removeObserver(observer)
-        }
-
+        Assert.assertNotNull(actualResponse)
+        Assert.assertTrue(actualResponse is Result.Success)
+        Assert.assertEquals(dummyLoginResponse.loginResult!!.toDomain(), (actualResponse as Result.Success).data)
     }
 }
