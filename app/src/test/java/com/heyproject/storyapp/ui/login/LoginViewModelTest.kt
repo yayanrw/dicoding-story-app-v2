@@ -43,11 +43,12 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun `Login Success with result success`() {
+    fun `Login Success with success result`() {
         val expectedResponse = MutableLiveData<Result<LoginResult>>()
         expectedResponse.value = Result.Success(dummyLoginResponse.loginResult!!.toDomain())
 
         `when`(userRepository.logIn(dummyEmail, dummyPassword)).thenReturn(expectedResponse)
+
         val actualResponse =
             loginViewModel.signIn(dummyEmail, dummyPassword).getOrAwaitValue()
 
@@ -55,6 +56,24 @@ class LoginViewModelTest {
 
         Assert.assertNotNull(actualResponse)
         Assert.assertTrue(actualResponse is Result.Success)
-        Assert.assertEquals(dummyLoginResponse.loginResult!!.toDomain(), (actualResponse as Result.Success).data)
+        Assert.assertEquals(
+            dummyLoginResponse.loginResult!!.toDomain(),
+            (actualResponse as Result.Success).data
+        )
+    }
+
+    @Test
+    fun `Login Failed with error result`() {
+        val expectedResponse = MutableLiveData<Result<LoginResult>>()
+        expectedResponse.value = Result.Error("Error")
+
+        `when`(userRepository.logIn(dummyEmail, dummyPassword)).thenReturn(expectedResponse)
+
+        val actualResponse = loginViewModel.signIn(dummyEmail, dummyPassword).getOrAwaitValue()
+
+        Mockito.verify(userRepository).logIn(dummyEmail, dummyPassword)
+
+        Assert.assertNotNull(actualResponse)
+        Assert.assertTrue(actualResponse is Result.Error)
     }
 }
