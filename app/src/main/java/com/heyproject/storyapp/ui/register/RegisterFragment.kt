@@ -41,35 +41,12 @@ class RegisterFragment : Fragment() {
             registerFragment = this@RegisterFragment
         }
 
-        setObserver()
         playAnimation()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun setObserver() {
-        viewModel.registerState.observe(viewLifecycleOwner) { result ->
-            when (result) {
-                is Result.Loading -> {
-                    setLoading(true)
-                }
-                is Result.Success -> {
-                    setLoading(false)
-                    Snackbar.make(
-                        binding.root, getString(R.string.success_register), Snackbar.LENGTH_SHORT
-                    ).show()
-                    findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
-                }
-                is Result.Error -> {
-                    setLoading(false)
-                    Snackbar.make(binding.root, getString(R.string.oops), Snackbar.LENGTH_SHORT)
-                        .show()
-                }
-            }
-        }
     }
 
     private fun playAnimation() {
@@ -106,7 +83,31 @@ class RegisterFragment : Fragment() {
                     binding.edRegisterName.text.toString(),
                     binding.edRegisterEmail.text.toString(),
                     binding.edRegisterPassword.text.toString()
-                )
+                ).observe(viewLifecycleOwner) { result ->
+                    when (result) {
+                        is Result.Loading -> {
+                            setLoading(true)
+                        }
+                        is Result.Success -> {
+                            setLoading(false)
+                            Snackbar.make(
+                                binding.root,
+                                getString(R.string.success_register),
+                                Snackbar.LENGTH_SHORT
+                            ).show()
+                            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+                        }
+                        is Result.Error -> {
+                            setLoading(false)
+                            Snackbar.make(
+                                binding.root,
+                                getString(R.string.oops),
+                                Snackbar.LENGTH_SHORT
+                            )
+                                .show()
+                        }
+                    }
+                }
             }
         }
     }
