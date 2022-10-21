@@ -20,31 +20,23 @@ Github : https://github.com/yayanrw
  **/
 
 class StoryRepository(
-    private val storyDatabase: StoryDatabase,
-    private val storyService: StoryService
+    private val storyDatabase: StoryDatabase, private val storyService: StoryService
 ) {
     fun getStories(token: String): LiveData<PagingData<StoryEntity>> {
-        @OptIn(ExperimentalPagingApi::class)
-        return Pager(
-            config = PagingConfig(pageSize = 10),
+        @OptIn(ExperimentalPagingApi::class) return Pager(config = PagingConfig(pageSize = 10),
             remoteMediator = StoryRemoteMediator(
-                storyDatabase,
-                storyService,
-                generateBearerToken(token)
+                storyDatabase, storyService, generateBearerToken(token)
             ),
             pagingSourceFactory = {
                 storyDatabase.storyDao().getStories()
-            }
-        ).liveData
+            }).liveData
     }
 
     fun getAllStoriesWithLocation(token: String): LiveData<Result<List<Story>>> = liveData {
         emit(Result.Loading())
         try {
             val response = storyService.getStories(
-                generateBearerToken(token),
-                size = 10,
-                location = 1
+                generateBearerToken(token), size = 10, location = 1
             )
 
             if (!response.error) {
@@ -59,24 +51,27 @@ class StoryRepository(
         }
     }
 
-    suspend fun uploadStory(
+    fun uploadStory(
         token: String,
         file: MultipartBody.Part,
         description: RequestBody,
         lat: RequestBody? = null,
         lon: RequestBody? = null
-    ): GeneralResponse {
-        return storyService.postStory(
-            generateBearerToken(token),
-            file,
-            description,
-            lat,
-            lon
-        )
-    }
+    ): LiveData<Result<GeneralResponse>> = liveData {
+        emit(Result.Loading())
+        try {
+            val response = storyService.postStory(
+                generateBearerToken(token), file, description, lat, lon
+            )
 
-    private fun generateBearerToken(token: String): String {
-        return "Bearer $token"
+            if (response.error == false) {
+                emit(Result.Success(response))
+            } else {
+                emit(Result.Error(response.message))
+            }
+        } catch (e: Exception) {
+            emit(Result.Error(e.message))
+        }
     }
 
     companion object {
@@ -87,6 +82,10 @@ class StoryRepository(
                     INSTANCE = it
                 }
             }
+        }
+
+        private fun generateBearerToken(token: String): String {
+            return "Bearer $token"
         }
     }
 }

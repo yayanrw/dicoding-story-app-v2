@@ -21,10 +21,18 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
 import com.heyproject.storyapp.R
 import com.heyproject.storyapp.databinding.ActivityStoryAddBinding
+import com.heyproject.storyapp.ui.SharedViewModel
 import com.heyproject.storyapp.ui.ViewModelFactory
 import com.heyproject.storyapp.util.Result
+import com.heyproject.storyapp.util.reduceFileImage
 import com.heyproject.storyapp.util.rotateBitmap
 import com.heyproject.storyapp.util.uriToFile
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
 class StoryAddActivity : AppCompatActivity() {
@@ -32,6 +40,9 @@ class StoryAddActivity : AppCompatActivity() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private val viewModel: StoryAddViewModel by viewModels {
+        ViewModelFactory.getInstance(this)
+    }
+    private val sharedViewModel: SharedViewModel by viewModels {
         ViewModelFactory.getInstance(this)
     }
 
@@ -51,7 +62,6 @@ class StoryAddActivity : AppCompatActivity() {
         }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        setObserver()
 
         binding.switchLoc.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
@@ -139,28 +149,6 @@ class StoryAddActivity : AppCompatActivity() {
         }
     }
 
-    private fun setObserver() {
-        viewModel.uploadState.observe(this) { result ->
-            when (result) {
-                is Result.Loading -> {
-                    setLoading(true)
-                }
-                is Result.Success -> {
-                    setLoading(false)
-                    Snackbar.make(
-                        binding.root, getString(R.string.upload_success), Snackbar.LENGTH_SHORT
-                    ).show()
-                    finish()
-                }
-                is Result.Error -> {
-                    setLoading(false)
-                    Snackbar.make(binding.root, getString(R.string.oops), Snackbar.LENGTH_SHORT)
-                        .show()
-                }
-            }
-        }
-    }
-
     private fun setLoading(isLoading: Boolean) {
         if (isLoading) {
             binding.linearProgressIndication.visibility = View.VISIBLE
@@ -219,13 +207,42 @@ class StoryAddActivity : AppCompatActivity() {
     }
 
     fun uploadImage() {
+        val token = sharedViewModel.user.value?.token ?: ""
+        val file = reduceFileImage(getFile!!)
+        val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
+            "photo", file.name, file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+        )
+        val description =
+            binding.edAddDescription.text.toString().toRequestBody("text/plain".toMediaType())
+        var lat: RequestBody? = null
+        var lon: RequestBody? = null
+
+        if (location?.latitude != null || location?.longitude != null) {
+            lat = location?.latitude.toString().toRequestBody("text/plain".toMediaType())
+            lon = location?.longitude.toString().toRequestBody("text/plain".toMediaType())
+        }
         if (formValidation()) {
             viewModel.uploadImage(
-                getFile!!,
-                binding.edAddDescription.text.toString(),
-                location?.latitude,
-                location?.longitude
-            )
+                token, imageMultipart, description, lat, lon
+            ).observe(this) { result ->
+                when (result) {
+                    is Result.Loading -> {
+                        setLoading(true)
+                    }
+                    is Result.Success -> {
+                        setLoading(false)
+                        Snackbar.make(
+                            binding.root, getString(R.string.upload_success), Snackbar.LENGTH_SHORT
+                        ).show()
+                        finish()
+                    }
+                    is Result.Error -> {
+                        setLoading(false)
+                        Snackbar.make(binding.root, getString(R.string.oops), Snackbar.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+            }
         }
     }
 
