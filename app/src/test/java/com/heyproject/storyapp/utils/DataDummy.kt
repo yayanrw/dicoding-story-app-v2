@@ -4,6 +4,9 @@ import com.heyproject.storyapp.data.datasource.remote.dto.LoginResultDto
 import com.heyproject.storyapp.data.datasource.remote.response.GeneralResponse
 import com.heyproject.storyapp.data.datasource.remote.response.LoginResponse
 import com.heyproject.storyapp.domain.model.Story
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 /**
 Written by Yayan Rahmat Wijaya on 10/21/2022 05:05
@@ -25,7 +28,7 @@ object DataDummy {
         )
     }
 
-    fun generateDummyRegisterResponse(): GeneralResponse {
+    fun generateDummyGeneralResponse(): GeneralResponse {
         return GeneralResponse(error = false, message = "success")
     }
 
@@ -44,5 +47,15 @@ object DataDummy {
             stories.add(story)
         }
         return stories
+    }
+
+    fun generateDummyMultipartFile(): MultipartBody.Part {
+        val dummyText = "text"
+        return MultipartBody.Part.create(dummyText.toRequestBody())
+    }
+
+    fun generateDummyRequestBody(): RequestBody {
+        val dummyText = "text"
+        return dummyText.toRequestBody()
     }
 }
