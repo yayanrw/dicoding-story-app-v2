@@ -18,10 +18,6 @@ class SharedViewModel(private val userRepository: UserRepository) : ViewModel() 
     private val _user = MutableLiveData<User>()
     val user: LiveData<User> = _user
 
-    init {
-        fetchUser()
-    }
-
     fun saveUser(user: User) {
         viewModelScope.launch {
             userRepository.saveUser(user)
@@ -29,7 +25,7 @@ class SharedViewModel(private val userRepository: UserRepository) : ViewModel() 
         }
     }
 
-    private fun fetchUser() {
+    fun fetchUser() {
         viewModelScope.launch {
             _user.value = userRepository.getUser().first()
         }

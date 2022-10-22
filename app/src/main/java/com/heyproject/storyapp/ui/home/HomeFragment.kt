@@ -67,6 +67,7 @@ class HomeFragment : Fragment(), MenuProvider {
     }
 
     private fun setObserver() {
+        sharedViewModel.fetchUser()
         sharedViewModel.user.observe(viewLifecycleOwner) { user ->
             if (!user.isLogin) {
                 findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
