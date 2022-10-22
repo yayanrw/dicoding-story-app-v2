@@ -1,8 +1,10 @@
 package com.heyproject.storyapp.utils
 
 import com.heyproject.storyapp.data.datasource.remote.dto.LoginResultDto
+import com.heyproject.storyapp.data.datasource.remote.dto.StoryDto
 import com.heyproject.storyapp.data.datasource.remote.response.GeneralResponse
 import com.heyproject.storyapp.data.datasource.remote.response.LoginResponse
+import com.heyproject.storyapp.data.datasource.remote.response.StoriesResponse
 import com.heyproject.storyapp.domain.model.Story
 import com.heyproject.storyapp.domain.model.User
 import okhttp3.MultipartBody
@@ -88,5 +90,50 @@ object DataDummy {
         return User(
             "", "", "", false
         )
+    }
+
+    fun generateDummyStoriesResponse(): StoriesResponse {
+        val stories = mutableListOf<StoryDto>()
+        for (i in 1..10) {
+            val storyEntity = StoryDto(
+                id = "story-FvU4u0Vp2S3PMsFg",
+                photoUrl = "https://story-api.dicoding.dev/images/stories/photos-1641623658595_dummy-pic.png",
+                createdAt = "2022-01-08T06:34:18.598Z",
+                name = "Yayan",
+                description = "Lorem Ipsum",
+                lon = -16.002,
+                lat = -10.212
+            )
+            stories.add(storyEntity)
+        }
+        return StoriesResponse(
+            listStory = stories, error = false, message = "success"
+        )
+    }
+
+    fun generateDummyRegisterResponse(isSuccess: Boolean): GeneralResponse {
+        return if (isSuccess) {
+            GeneralResponse(error = false, message = "success")
+        } else {
+            GeneralResponse(error = true, message = "Email already taken")
+        }
+    }
+
+    fun generateDummyLoginResponses(isSuccess: Boolean): LoginResponse {
+        return if (isSuccess) {
+            val loginResultDto = LoginResultDto(
+                name = "Yayan Rahmat Wijaya",
+                userId = "user-yj5pc_LARC_AgK61",
+                token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyLXlqNXBjX0xBUkNfQWdLNjEiLCJpYXQiOjE2NDE3OTk5NDl9.flEMaQ7zsdYkxuyGbiXjEDXO8kuDTcI__3UjCwt6R_I"
+            )
+
+            LoginResponse(error = false, message = "success", loginResult = loginResultDto)
+        } else {
+            LoginResponse(error = true, message = "Email or Password is incorrect")
+        }
+    }
+
+    fun generateDummyPostStoryResponse(): GeneralResponse {
+        return GeneralResponse(error = false, message = "success")
     }
 }
