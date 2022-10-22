@@ -63,6 +63,8 @@ class StoryAddActivity : AppCompatActivity() {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
+        setObserver()
+
         binding.switchLoc.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 getCurrentLocation()
@@ -70,6 +72,10 @@ class StoryAddActivity : AppCompatActivity() {
                 this.location = null
             }
         }
+    }
+
+    private fun setObserver() {
+        sharedViewModel.fetchUser()
     }
 
     override fun onRequestPermissionsResult(
