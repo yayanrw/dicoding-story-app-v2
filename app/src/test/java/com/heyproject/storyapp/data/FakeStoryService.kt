@@ -4,6 +4,7 @@ import com.heyproject.storyapp.data.datasource.remote.api.StoryService
 import com.heyproject.storyapp.data.datasource.remote.response.GeneralResponse
 import com.heyproject.storyapp.data.datasource.remote.response.LoginResponse
 import com.heyproject.storyapp.data.datasource.remote.response.StoriesResponse
+import com.heyproject.storyapp.utils.DataDummy.generateDummyEmptyStoriesResponse
 import com.heyproject.storyapp.utils.DataDummy.generateDummyLoginResponses
 import com.heyproject.storyapp.utils.DataDummy.generateDummyPostStoryResponse
 import com.heyproject.storyapp.utils.DataDummy.generateDummyRegisterResponse
@@ -48,6 +49,10 @@ class FakeStoryService : StoryService {
     override suspend fun getStories(
         auth: String, page: Int?, size: Int?, location: Int?
     ): StoriesResponse {
-        return generateDummyStoriesResponse()
+        return if (auth == "Bearer token") {
+            generateDummyStoriesResponse()
+        } else {
+            generateDummyEmptyStoriesResponse()
+        }
     }
 }
