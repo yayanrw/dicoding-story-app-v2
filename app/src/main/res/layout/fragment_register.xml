@@ -15,14 +15,13 @@
             type="com.heyproject.storyapp.ui.register.RegisterFragment" />
     </data>
 
-    <ScrollView
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:context=".ui.register.RegisterFragment">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.progressindicator.LinearProgressIndicator
                 android:id="@+id/linear_progress_indicator"
@@ -30,96 +29,108 @@
                 android:layout_height="wrap_content"
                 android:indeterminate="true"
                 android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:indicatorColor="@color/teal_200" />
 
-            <TextView
-                android:id="@+id/tv_app_name"
-                style="@style/Widget.StoryApp.TextView.BigTitle"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="108dp"
-                android:text="@string/register"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:alpha="0"/>
+        </com.google.android.material.appbar.AppBarLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/register_name"
-                style="@style/Widget.StoryApp.TextInputLayout.OutlinedBox"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="64dp"
-                android:layout_marginEnd="16dp"
-                android:hint="@string/name"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_app_name"
-                app:startIconDrawable="@drawable/ic_baseline_person_24"
-                android:alpha="0">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ed_register_name"
-                    style="@style/TextInputEditText"
-                    android:inputType="textPersonName" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/register_email"
-                style="@style/Widget.StoryApp.TextInputLayout.OutlinedBox"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:hint="@string/email"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/register_name"
-                app:startIconDrawable="@drawable/ic_baseline_email_24"
-                android:alpha="0">
-
-                <com.heyproject.storyapp.ui.customview.EmailEditText
-                    android:id="@+id/ed_register_email"
-                    style="@style/TextInputEditText"
-                    android:inputType="textEmailAddress" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/register_password"
-                style="@style/Widget.StoryApp.TextInputLayout.OutlinedBox"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:hint="@string/password"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/register_email"
-                app:passwordToggleEnabled="true"
-                app:startIconDrawable="@drawable/ic_baseline_lock_24"
-                android:alpha="0">
-
-                <com.heyproject.storyapp.ui.customview.PasswordEditText
-                    android:id="@+id/ed_register_password"
-                    style="@style/TextInputEditText"
-                    android:inputType="textPassword" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_register"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="16dp"
-                android:onClick="@{() -> registerFragment.register()}"
-                android:text="@string/register_now"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/register_password"
-                android:alpha="0" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+                tools:context=".ui.register.RegisterFragment">
+
+                <TextView
+                    android:id="@+id/tv_app_name"
+                    style="@style/Widget.StoryApp.TextView.BigTitle"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="108dp"
+                    android:text="@string/register"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:alpha="0"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/register_name"
+                    style="@style/Widget.StoryApp.TextInputLayout.OutlinedBox"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="64dp"
+                    android:layout_marginEnd="16dp"
+                    android:hint="@string/name"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_app_name"
+                    app:startIconDrawable="@drawable/ic_baseline_person_24"
+                    android:alpha="0">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/ed_register_name"
+                        style="@style/TextInputEditText"
+                        android:inputType="textPersonName" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/register_email"
+                    style="@style/Widget.StoryApp.TextInputLayout.OutlinedBox"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:hint="@string/email"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/register_name"
+                    app:startIconDrawable="@drawable/ic_baseline_email_24"
+                    android:alpha="0">
+
+                    <com.heyproject.storyapp.ui.customview.EmailEditText
+                        android:id="@+id/ed_register_email"
+                        style="@style/TextInputEditText"
+                        android:inputType="textEmailAddress" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/register_password"
+                    style="@style/Widget.StoryApp.TextInputLayout.OutlinedBox"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:hint="@string/password"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/register_email"
+                    app:passwordToggleEnabled="true"
+                    app:startIconDrawable="@drawable/ic_baseline_lock_24"
+                    android:alpha="0">
+
+                    <com.heyproject.storyapp.ui.customview.PasswordEditText
+                        android:id="@+id/ed_register_password"
+                        style="@style/TextInputEditText"
+                        android:inputType="textPassword" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_register"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="16dp"
+                    android:onClick="@{() -> registerFragment.register()}"
+                    android:text="@string/register_now"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/register_password"
+                    android:alpha="0" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
