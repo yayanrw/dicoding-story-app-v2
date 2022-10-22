@@ -111,6 +111,13 @@ object DataDummy {
         )
     }
 
+    fun generateDummyEmptyStoriesResponse(): StoriesResponse {
+        val stories = mutableListOf<StoryDto>()
+        return StoriesResponse(
+            listStory = stories, error = false, message = "success"
+        )
+    }
+
     fun generateDummyRegisterResponse(isSuccess: Boolean): GeneralResponse {
         return if (isSuccess) {
             GeneralResponse(error = false, message = "success")
