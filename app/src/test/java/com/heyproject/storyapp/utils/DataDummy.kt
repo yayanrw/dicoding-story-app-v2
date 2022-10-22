@@ -4,6 +4,7 @@ import com.heyproject.storyapp.data.datasource.remote.dto.LoginResultDto
 import com.heyproject.storyapp.data.datasource.remote.response.GeneralResponse
 import com.heyproject.storyapp.data.datasource.remote.response.LoginResponse
 import com.heyproject.storyapp.domain.model.Story
+import com.heyproject.storyapp.domain.model.User
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -16,7 +17,7 @@ Github : https://github.com/yayanrw
 object DataDummy {
     fun generateDummyLoginResponse(): LoginResponse {
         val loginResultDto = LoginResultDto(
-            name = "Arif Faizin",
+            name = "Yayan Rahmat Wijaya",
             userId = "user-yj5pc_LARC_AgK61",
             token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyLXlqNXBjX0xBUkNfQWdLNjEiLCJpYXQiOjE2NDE3OTk5NDl9.flEMaQ7zsdYkxuyGbiXjEDXO8kuDTcI__3UjCwt6R_I"
         )
@@ -72,5 +73,20 @@ object DataDummy {
     fun generateDummyRequestBody(): RequestBody {
         val dummyText = "text"
         return dummyText.toRequestBody()
+    }
+
+    fun generateDummyLoggedInUser(): User {
+        return User(
+            userId = "user-yj5pc_LARC_AgK61",
+            name = "Yayan Rahmat Wijaya",
+            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyLXlqNXBjX0xBUkNfQWdLNjEiLCJpYXQiOjE2NDE3OTk5NDl9.flEMaQ7zsdYkxuyGbiXjEDXO8kuDTcI__3UjCwt6R_I",
+            isLogin = true
+        )
+    }
+
+    fun generateDummyLoggedOutUser(): User {
+        return User(
+            "", "", "", false
+        )
     }
 }
