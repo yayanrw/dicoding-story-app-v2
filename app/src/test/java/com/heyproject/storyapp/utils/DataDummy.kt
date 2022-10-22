@@ -22,9 +22,7 @@ object DataDummy {
         )
 
         return LoginResponse(
-            loginResult = loginResultDto,
-            error = false,
-            message = "success"
+            loginResult = loginResultDto, error = false, message = "success"
         )
     }
 
@@ -32,8 +30,25 @@ object DataDummy {
         return GeneralResponse(error = false, message = "success")
     }
 
+    fun generateDummyStoriesWithoutLocation(): List<Story> {
+        val stories = arrayListOf<Story>()
+        for (i in 1..10) {
+            val story = Story(
+                id = "story-FvU4u0Vp2S3PMsFg",
+                photoUrl = "https://story-api.dicoding.dev/images/stories/photos-1641623658595_dummy-pic.png",
+                createdAt = "2022-01-08T06:34:18.598Z",
+                name = "Yayan",
+                description = "Lorem Ipsum",
+                lon = null,
+                lat = null
+            )
+            stories.add(story)
+        }
+        return stories
+    }
+
     fun generateDummyStoriesWithLocation(): List<Story> {
-        val stories = ArrayList<Story>()
+        val stories = arrayListOf<Story>()
         for (i in 1..10) {
             val story = Story(
                 id = "story-FvU4u0Vp2S3PMsFg",
