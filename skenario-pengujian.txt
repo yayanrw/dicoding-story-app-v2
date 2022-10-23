@@ -1,0 +1,69 @@
+A. Login Sukses
+    - Memastikan response tidak null
+    - Memastikan mengembalikan Result.Success
+    - Memastikan data user sesuai dengan yang diharapkan
+
+B. Login Gagal
+    - Memastikan response tidak null
+    - Memastikan mengembalikan Result.Error
+    - Memastikan response message error yang diterima sesuai dengan yang diharapkan
+
+C. Register Sukses
+    - Memastikan response tidak null
+    - Memastikan mengembalikan Result.Success
+    - Memastikan response yang diterima sesuai dengan yang diharapkan
+
+D. Register Gagal
+    - Memastikan response tidak null
+    - Memastikan mengembalikan Result.Error
+    - Memastikan response message error yang diterima sesuai dengan yang diharapkan
+
+E. Berhasil memuat data story
+    - Memastikan response tidak null
+    - Memastikan response data story yang diterima sesuai dengan yang diharapkan
+    - Memastikan response jumlah data story yang diterima sesuai dengan jumlah yang diharapkan
+    - Memastikan nilai name response data story pada array ke 1 sesuai dengan yang diharapkan
+
+F. Berhasil memuat data story yang memiliki data location (lon/lat)
+    - Memastikan response tidak null
+    - Memastikan mengembalikan Result.Success
+    - Memastikan response data story yang diterima sesuai dengan yang diharapkan
+    - Memastikan semua nilai latitude dari response data story yang diterima tidak bernilai null
+    - Memastikan semua nilai longitude dari response data story yang diterima tidak bernilai null
+
+G. Memuat data story gagal
+    - Memastikan response tidak null
+    - Memastikan mengembalikan Result.Error
+
+H. Post Story dengan share lokasi Sukses
+    - Memastikan response tidak null
+    - Memastikan mengembalikan Result.Success
+    - Memastikan response yang diterima sesuai dengan yang diharapkan
+
+I. Post Story dengan share lokasi Gagal
+    - Memastikan response tidak null
+    - Memastikan mengembalikan Result.Error
+
+J. Post Story dengan tidak share lokasi Sukses
+    - Memastikan response tidak null
+    - Memastikan mengembalikan Result.Success
+    - Memastikan response yang diterima sesuai dengan yang diharapkan
+
+K. Post Story dengan tidak share lokasi Gagal
+    - Memastikan response tidak null
+    - Memastikan mengembalikan Result.Error
+
+L. Sukses menyimpan data User pada DataStore
+    - Memastikan response tidak null
+    - Memastikan data user tersimpan pada DataStore
+    - Memastikan data user yang tersimpan sesuai dengan yang diharapkan
+    - Memastikan value dari livedata user tidak null
+    - Memastikan value dari livedata user sesuai dengan yang diharapkan
+    - Melakukan fetchUser() dan memastikan value dari livedata user sesuai dengan yang diharapkan
+
+M. Sukses Logout
+    - Memastikan data user tersimpan pada DataStore
+    - Memastikan nilai dari livedata user tidak bernilai null
+    - Memastikan nilai dari livedata user sesuai dengan yang diharapkan
+    - Melakukan proses logOut() dan memastikan nilai dari livedata user bernilai "" (kosong)
+    - Memastikan nilai dari data user pada DataStore sesuai dengan yang diharapkan
