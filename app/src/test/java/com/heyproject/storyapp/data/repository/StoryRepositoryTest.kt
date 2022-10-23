@@ -1,7 +1,6 @@
 package com.heyproject.storyapp.data.repository
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.heyproject.storyapp.data.FakeRemoteKeysDao
 import com.heyproject.storyapp.data.FakeStoryDao
 import com.heyproject.storyapp.data.FakeStoryDatabase
 import com.heyproject.storyapp.data.FakeStoryService
