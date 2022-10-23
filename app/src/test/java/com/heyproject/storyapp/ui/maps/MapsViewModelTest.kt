@@ -41,7 +41,7 @@ class MapsViewModelTest {
     }
 
     @Test
-    fun `Get stories with success result`() {
+    fun `Get stories successfully with location`() {
         val expectedResponse = MutableLiveData<Result<List<Story>>>()
         expectedResponse.value = Result.Success(dummyStoriesWithLocation)
 
@@ -58,31 +58,15 @@ class MapsViewModelTest {
             dummyStoriesWithLocation,
             (actualResponse as Result.Success).data
         )
-    }
-
-    @Test
-    fun `Get stories where lon lat is not null with success result`() {
-        val expectedResponse = MutableLiveData<Result<List<Story>>>()
-        expectedResponse.value = Result.Success(dummyStoriesWithLocation)
-
-        `when`(storyRepository.getAllStoriesWithLocation(dummyToken)).thenReturn(expectedResponse)
-
-        val actualResponse =
-            mapsViewModel.fetchAllStoryWithLocation(dummyToken).getOrAwaitValue()
-
-        Mockito.verify(storyRepository).getAllStoriesWithLocation(dummyToken)
-
-        Assert.assertNotNull(actualResponse)
-        Assert.assertTrue(actualResponse is Result.Success)
-        Assert.assertNotNull(actualResponse.data?.map {
-            it.lon
-        })
-        Assert.assertNotNull(actualResponse.data?.map {
-            it.lat
-        })
-        Assert.assertEquals(
-            dummyStoriesWithLocation,
-            (actualResponse as Result.Success).data
+        Assert.assertNotNull(
+            actualResponse.data?.forEach {
+                it.lon
+            }
+        )
+        Assert.assertNotNull(
+            actualResponse.data?.forEach {
+                it.lat
+            }
         )
     }
 
