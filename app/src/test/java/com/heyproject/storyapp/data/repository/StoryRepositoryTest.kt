@@ -5,6 +5,7 @@ import com.heyproject.storyapp.data.FakeStoryDao
 import com.heyproject.storyapp.data.FakeStoryDatabase
 import com.heyproject.storyapp.data.FakeStoryService
 import com.heyproject.storyapp.data.datasource.local.dao.StoryDao
+import com.heyproject.storyapp.data.datasource.local.database.StoryDatabase
 import com.heyproject.storyapp.data.datasource.remote.api.StoryService
 import com.heyproject.storyapp.util.Result
 import com.heyproject.storyapp.utils.DataDummy
@@ -33,7 +34,7 @@ class StoryRepositoryTest {
     private lateinit var storyService: StoryService
     private lateinit var storyDao: StoryDao
     private lateinit var storyRepository: StoryRepository
-    private lateinit var storyDatabase: FakeStoryDatabase
+    private lateinit var storyDatabase: StoryDatabase
 
     private val dummyToken = "token"
     private val dummyFalseToken = "false_token"
@@ -55,12 +56,10 @@ class StoryRepositoryTest {
 
     @Test
     fun `Get stories should not null`() = runTest {
-        val expectedResponse = dummyStories
         val actualResponse = storyRepository.getStories(dummyToken)
 
         actualResponse.observeForTesting {
             Assert.assertNotNull(actualResponse)
-//            Assert.assertEquals(dummyStories.listStory.size, (actualResponse.value))
         }
     }
 
