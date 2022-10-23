@@ -75,5 +75,9 @@ class LoginViewModelTest {
 
         Assert.assertNotNull(actualResponse)
         Assert.assertTrue(actualResponse is Result.Error)
+        Assert.assertEquals(
+            expectedResponse.value?.message,
+            actualResponse.message
+        )
     }
 }
